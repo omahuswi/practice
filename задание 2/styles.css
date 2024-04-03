@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Bodoni MT Poster Compressed", monospace;
+
+}
+
+body{
+    margin: 20px;
+    min-height: 100vh;
+    background-color: thistle;
+}
+.main{
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+}
+.data{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+table {
+    padding: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background-color: white;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    border-width: 1px 1px 0;
+    background-color: #f7f7f7;
+}
+
+.content {
+    margin: 20px;
+}
