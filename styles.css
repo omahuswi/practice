@@ -1,0 +1,41 @@
+body{
+    background-color: #F9F7F2;
+    font-family: system-ui;
+    color: #44000A;
+}
+
+.main{
+    font-size: 60px;
+    border: 10px solid transparent;
+    padding: 30px;
+    background: linear-gradient(#F9F7F2, #F9F7F2) padding-box,
+    linear-gradient(#DD2255, #44000A) border-box;
+    border-radius: 14px;
+}
+div{
+    text-align: center;
+    font-size: 28px;
+}
+
+div.text{
+    margin-left: 200px;
+    margin-right: 200px;
+    text-align: justify;
+}
+
+.important{
+    border-bottom: 3px dashed #DD2255;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+button{
+    padding: 15px;
+    border-radius: 100px;
+    color: #DD2255;
+    border-width: 4px;
+    border-color: #DD2255;
+    font-size: 28px;
+}
