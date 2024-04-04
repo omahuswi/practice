@@ -1,0 +1,133 @@
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Bodoni MT Poster Compressed", monospace;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    color: #2D2C42;
+    font-size: 0.9rem;
+    background: radial-gradient(#8F98AE, #EDF2F4);
+
+}
+
+hr {
+    margin: 10px 0;
+}
+
+.main {
+    /*margin-top: 20px;*/
+    /*margin-bottom: 20px;*/
+    padding: 20px;
+    background-color: #EDF2F4;
+    border-radius: 20px;
+    /*width: 100%;*/
+    width: 1200px;
+}
+
+/*.data{*/
+/*  display: flex;*/
+/*align-items: center;*/
+/*  justify-content: center;*/
+/*}*/
+
+.data-table {
+    padding: 20px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #EDF2F4;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px #8F98AE;
+    overflow: hidden;
+
+
+    thead {
+        box-shadow: 0 5px 10px #8F98AE;
+    }
+
+    th {
+        padding: 1rem 2rem;
+        letter-spacing: 0.1rem;
+        font-size: 0.9rem;
+        font-weight: 900;
+        border: 1px solid #8F98AE;
+    }
+}
+
+tr, td {
+    border: 1px solid #8F98AE;
+    padding: 10px 5px;
+    text-align: center;
+
+}
+
+tr.content:hover {
+    background-color: #ced2dc;
+    cursor: pointer;
+
+    thead {
+        box-shadow: 0 5px 10px #8F98AE;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        margin-left: auto;
+    }
+}
+
+/*.content {*/
+/*    margin: 20px;*/
+/*}*/
+
+#pagination {
+    /*margin-top: 20px;*/
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 0;
+    list-style-type: none;
+}
+#pagination li{
+    text-align: center;
+    margin-top: 20px;
+    /*margin-right: 5px;*/
+    padding: 10px;
+    border: 1px solid #8F98AE;
+    min-height: 35px;
+    min-width: 35px;
+}
+
+#pagination li:hover{
+    cursor: pointer;
+    color: #EA323E;
+    border: 1px solid #EA323E;
+
+}
+
+#pagination li.active{
+    color: #EDF2F4;
+    background-color: #EA323E;
+    border: 1px solid #EA323E;
+}
+
+.add-task {
+    background-color: #EA323E;
+    color: #EDF2F4;
+    font-size: 0.9rem;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+

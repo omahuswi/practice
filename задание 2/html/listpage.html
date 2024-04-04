@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сменно-суточные задания</title>
+    <link rel="stylesheet" href="../css/listpage.css"></link>
+</head>
+<body>
+<form class="main">
+    <div class="header">
+        <h1>Сменно-суточные задания</h1>
+        <button class="add-task" onclick="document.location='../html/task.html'">Добавить задание</button>
+    </div>
+
+    <hr/>
+
+    <div class="options">
+        <input type="text" placeholder="Поиск">
+        <label for="sortBy">Сортировать по</label>
+        <select name="sortBy" id="sortBy">
+            <option value="numberTask">номер</option>
+            <option value="dateIssue">дате выдачи</option>
+            <option value="dateAccept">дате принятия</option>
+        </select>
+    </div>
+
+
+    <!--    таблица с данными   -->
+    <div class="data">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>НОМЕР</th>
+                <th>ОТДЕЛ</th>
+                <th>МАСТЕР</th>
+                <th>РАБОТНИК</th>
+                <th>ДАТА ВЫДАЧИ</th>
+                <th>ДАТА ПРИНЯТИЯ</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <script src="../scripts/listpage.js"></script>
+    </div>
+
+    <!--    кномки для переключения между листами   -->
+    <div>
+        <ul id="pagination">
+
+        </ul>
+    </div>
+</form>
+</body>
+</html>
