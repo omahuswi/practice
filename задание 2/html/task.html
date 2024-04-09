@@ -7,15 +7,74 @@
 </head>
 <body>
 <form class="main">
-    <div class="header">
-        <h1>Задание</h1>
+    <div id="header">
     </div>
     <hr>
-    <div class="info">
-        <p>Номер</p>
-        <p>Работник</p>
+    <div id="result">
     </div>
 
+    <div class="data">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>НОМЕР</th>
+                <th>ДИЗАЙН</th>
+                <th>НАЗВАНИЕ</th>
+                <th>РАЗМЕР</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <form class="info">
+<!--            <p>Операции</p>-->
+            <table id ="info-table" class="hidden" >
+                <thead>
+                <tr>
+                    <th>НОМЕР</th>
+                    <th>НАЗВАНИЕ</th>
+                    <th>КОЛИЧЕСТВО ВЫДАННОГО</th>
+                    <th>КОЛИЧЕСТВО ПРИНЯТОГО</th>
+                    <th>ГОТОВНОСТЬ</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <script>
+        const resultsList = document.getElementById('result'),
+            headerTask = document.getElementById('header')
+        new URLSearchParams(window.location.search).forEach((value, name) => {
+            let taskId = `${value}`
+            fetch('../json/task.json')
+                .then(response => response.json())
+                .then(data => {
+                    let needData = data.filter(item => item.idTask == taskId);
+                    needData.forEach(item => {
+                        headerTask.innerHTML = `<h1> Задание ${item.numberTask}</h1>`
+                        resultsList.innerHTML = `
+                            <p>Работник: ${item.workerName}</p>
+                            <p>дата: ${item.dateIssue}</p>
+                            <p>дата: ${item.dateAccept}</p>
+                        `
+
+
+                        // for (let key in item) {
+                        //     if (Object.prototype.hasOwnProperty.call(item, key)) {
+                        //         if (key != "numberOperation") {
+                        //             resultsList.append(key + ': ' + item[key]); // Выводим ключ и значение свойства
+                        //             resultsList.append(document.createElement('br'))
+                        //         } else break;
+                        //     }
+                        // }
+                    })
+
+                })
+        })
+
+    </script>
 </form>
 </body>
 </html>
