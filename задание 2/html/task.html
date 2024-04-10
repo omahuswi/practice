@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="../css/listpage.css"></link>
 </head>
 <body>
+<header class="main">
+    <h1>Сменно-суточные задания ИС МКАДД</h1>
+</header>
 <form class="main">
     <div id="header">
     </div>
@@ -18,21 +21,22 @@
             <thead>
             <tr>
                 <th>НОМЕР</th>
-                <th>ДИЗАЙН</th>
-                <th>НАЗВАНИЕ</th>
-                <th>РАЗМЕР</th>
+                <th>ОБОЗНАЧЕНИЕ</th>
+                <th>НАИМЕНОВАНИЕ</th>
+                <th>ТИП И РАЗМЕР</th>
             </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
         <form class="info">
-<!--            <p>Операции</p>-->
-            <table id ="info-table" class="hidden" >
+            <!--            таблица с операциями для каждой детали(пока никуда не выводится )-->
+            <!--            <p>Операции</p>-->
+            <table id="info-table" class="hidden">
                 <thead>
                 <tr>
                     <th>НОМЕР</th>
-                    <th>НАЗВАНИЕ</th>
+                    <th>НАИМЕНОВАНИЕ</th>
                     <th>КОЛИЧЕСТВО ВЫДАННОГО</th>
                     <th>КОЛИЧЕСТВО ПРИНЯТОГО</th>
                     <th>ГОТОВНОСТЬ</th>
@@ -44,8 +48,28 @@
         </form>
     </div>
     <script>
+        /**
+         * Функция форматирует строку с датой и временем в вид dd.MM.yy HH:mm:ss
+         *
+         *(вытащу отдельно, чтобы не писать везде, но пока лень)))
+         * @return {number} отформатированная строка в виде dd.MM.yy HH:mm:ss
+         * @param dateTimeString строка для форматирования.
+         */
+        function formatDateTime(dateTimeString) {
+            var dateTime = new Date(dateTimeString);
+            var day = dateTime.getDate();
+            var month = dateTime.getMonth() + 1;
+            var year = dateTime.getFullYear();
+            var hours = dateTime.getHours();
+            var minutes = dateTime.getMinutes();
+            var seconds = dateTime.getSeconds();
+            return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}
+${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        }
+
         const resultsList = document.getElementById('result'),
-            headerTask = document.getElementById('header')
+            headerTask = document.getElementById('header'),
+            tableTask = document.querySelector('.data-table tbody')
         new URLSearchParams(window.location.search).forEach((value, name) => {
             let taskId = `${value}`
             fetch('../json/task.json')
@@ -53,27 +77,26 @@
                 .then(data => {
                     let needData = data.filter(item => item.idTask == taskId);
                     needData.forEach(item => {
-                        headerTask.innerHTML = `<h1> Задание ${item.numberTask}</h1>`
+                        headerTask.innerHTML = `<h1> Задание № ${item.numberTask}</h1>`
                         resultsList.innerHTML = `
                             <p>Работник: ${item.workerName}</p>
-                            <p>дата: ${item.dateIssue}</p>
-                            <p>дата: ${item.dateAccept}</p>
+                            <p>Дата выдачи: ${formatDateTime(item.dateIssue)}</p>
+                            <p>Дата принятия: ${formatDateTime(item.dateAccept)}</p>
                         `
 
-
-                        // for (let key in item) {
-                        //     if (Object.prototype.hasOwnProperty.call(item, key)) {
-                        //         if (key != "numberOperation") {
-                        //             resultsList.append(key + ': ' + item[key]); // Выводим ключ и значение свойства
-                        //             resultsList.append(document.createElement('br'))
-                        //         } else break;
-                        //     }
-                        // }
+                        // вывод данных в таблицу
+                        let row = document.createElement('tr');
+                        row.classList.add("content")
+                        row.innerHTML = `
+                    <td >${item.numberSP}</a></td>
+                    <td>${item.designSP}</td>
+                    <td>${item.nameSP}</td>
+                    <td>${item.typeSizeSP}</td>
+                    `;
+                        tableTask.appendChild(row);
                     })
-
                 })
         })
-
     </script>
 </form>
 </body>

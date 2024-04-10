@@ -4,31 +4,33 @@
     <meta charset="UTF-8">
     <title>Сменно-суточные задания</title>
     <link rel="stylesheet" href="../css/listpage.css"/>
-
 </head>
 <body>
+<header class="main">
+    <h1>Сменно-суточные задания ИС МКАДД</h1>
+</header>
 <form class="main">
     <header>
         <div id="header">
             <h1>Сменно-суточные задания</h1>
-            <button type=button class="add-task" onclick="window.location.href = '../html/addTask.html'">Добавить
+            <button type=button class="add-task" onclick="window.location.href = '../html/addTask.html'"> + Добавить
                 задание
             </button>
         </div>
         <hr/>
         <div class="options">
-            <div>
-                <label for="sortBy">Сортировать по</label>
-                <select name="sortBy" id="sortBy">
-                    <option value="numberTask">номер</option>
-                    <option value="dateIssue">дате выдачи</option>
-                    <option value="dateAccept">дате принятия</option>
-                </select>
-            </div>
+<!--            <div>-->
+<!--                <label for="sortBy">Сортировать по</label>-->
+<!--                <select name="sortBy" id="sortBy">-->
+<!--                    <option value="numberTask">номер</option>-->
+<!--                    <option value="dateIssue">дате выдачи</option>-->
+<!--                    <option value="dateAccept">дате принятия</option>-->
+<!--                </select>-->
+<!--            </div>-->
 
             <div class="search">
                 <input type="search" placeholder="Поиск" id="search">
-                <!--            <button class="icon-search"></button>-->
+
             </div>
         </div>
     </header>
@@ -39,7 +41,7 @@
             <thead>
             <tr>
                 <th>НОМЕР<span class="icon-sort">&#8593;</span></th>
-                <th>ОТДЕЛ<span class="icon-sort">&#8593;</span></th>
+                <th>ЦЕХ<span class="icon-sort">&#8593;</span></th>
                 <th>МАСТЕР<span class="icon-sort">&#8593;</span></th>
                 <th>РАБОТНИК<span class="icon-sort">&#8593;</span></th>
                 <th>ДАТА ВЫДАЧИ<span class="icon-sort">&#8593;</span></th>

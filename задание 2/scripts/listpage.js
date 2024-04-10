@@ -1,18 +1,13 @@
 fetch('../json/listTask.json')
     .then(response => response.json())
     .then(data => {
-
-        //coртировка данных
-        // let sortedData = sortData(data)
-
         const tableBody = document.querySelector('.data-table tbody')
         let pagination = document.querySelector('#pagination');
-        let rowsCount = 10;
+        let rowsCount = 10;//количество строк данных на одной странице
 
-        let active;//переменная для хранения активной кнопки
+        let active; //переменная для хранения активной кнопки отобращения страницы
 
-        let pageCount = Math.ceil(data.length / rowsCount)
-        // let pageCount = Math.ceil(data.length / rowsCount)
+        let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
 
         //создание списка пагинации
         let items = []
@@ -23,52 +18,19 @@ fetch('../json/listTask.json')
             items.push(li)
         }
 
-        //отрисовка первой страницы
+        //вызов функции отрисовки первой страницы
         displayPage(items[0])
 
-        //присвоение событие кнопкам
+        //присвоение события кнопкам пагинации
         for (let item of items) {
             item.addEventListener('click', function () {
-                displayPage(this)
+                displayPage(this)//вызов функции отрисовки выбранной страницы
             })
         }
 
-        // /**
-        //  * Сортировка данных
-        //  *
-        //  * @param data массив данных
-        //  * @returns {newData}
-        //  */
-        // function sortData(data) {
-        //     const table = document.querySelector('.data-table');
-        //     let newData = [];
-        //     table.addEventListener('click', (e) => {
-        //         const el = e.target;
-        //         if (!(el.nodeName === 'TH')) return;
-        //         // el.classList.add('active')
-        //
-        //         const index = el.cellIndex;
-        //         newData = sortTable(index, data);
-        //     })
-        //
-        //     /**
-        //      *
-        //      * @param index
-        //      * @param rows
-        //      * @returns {*} от
-        //      */
-        //     function sortTable(index, rows) {
-        //         const tableBody = table.querySelector('tbody')
-        //         const compare = function (firstRow, secondRow) {
-        //             return firstRow.cells[index].innerHTML - secondRow.cells[index].innerHTML
-        //         }
-        //         return rows.sort(compare)
-        //     }
-        //     return newData;
-        // }
-
         /**
-         *Выводит данные в таблицу
+         *отрисовка нужнной страницы с данными из JSON файла (вызывается при
+         первичной загрузке веб-страницы и при нажатии  на кнопки пагинации)
          *
          * @param item номер отображаемой страницы
          */
@@ -77,26 +39,34 @@ fetch('../json/listTask.json')
                 active.classList.remove('active')
             }
             active = item;
-            item.classList.add("active")
+            item.classList.add('active')
             let pageNum = +item.innerHTML;
 
             let start = rowsCount * (pageNum - 1);
             let end = start + rowsCount;
             let paginatedData = data.slice(start, end);
-            // let paginatedData = data.slice(start, end);
             tableBody.innerHTML = "";
+
 
             paginatedData.forEach(item => {
                 let row = document.createElement('tr');
+
+                //присвоение каждой строке события перехода на страницу с данными о задании
                 row.setAttribute('id', `${item.idTask}`)
                 row.addEventListener('click', function () {
                     sendId(row.id)
                 });
 
+                /**
+                 * функция возвращает путь до нужной страницы с передачей на неё идентификатора страницы
+                 *
+                 * @param id идентификатор задачи
+                 */
                 function sendId(id) {
                     window.location.href = '../html/task.html?id=' + id;
                 }
 
+                //отрисовка таблицы с данными
                 row.classList.add("content")
                 row.innerHTML = `
                     <td >${item.numberTask}</a></td>
@@ -111,10 +81,10 @@ fetch('../json/listTask.json')
         }
     })
 
-
 /**
- * Форматирует строку с датой и временем.
- * @return {number} отформатированная строка в виде DD.MM.YY H:M:S.
+ * Функция форматирует строку с датой и временем в вид dd.MM.yy HH:mm:ss
+ *
+ * @return {number} отформатированная строка в виде dd.MM.yy HH:mm:ss
  * @param dateTimeString строка для форматирования.
  */
 function formatDateTime(dateTimeString) {
