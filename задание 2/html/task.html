@@ -23,7 +23,7 @@
                 <th>НОМЕР</th>
                 <th>ОБОЗНАЧЕНИЕ</th>
                 <th>НАИМЕНОВАНИЕ</th>
-                <th>ТИП И РАЗМЕР</th>
+                <th>ТИПОРАЗМЕР</th>
             </tr>
             </thead>
             <tbody>
@@ -66,6 +66,7 @@
             return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}
 ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
         }
+
 
         const resultsList = document.getElementById('result'),
             headerTask = document.getElementById('header'),
