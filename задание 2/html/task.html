@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Задание</title>
+    <title>Сменно-суточное задание №</title>
     <link rel="stylesheet" href="../css/listpage.css"></link>
+
 </head>
 <body>
 <header class="main">
     <h1>Сменно-суточные задания ИС МКАДД</h1>
 </header>
+
+<a class="back" onclick="javascript:history.back(); return false;"> < Назад</a>
+<!--<a class="back" href="listpage.html">< Назад</a>-->
+
 <form class="main">
     <div id="header">
+        <h1 class = "header" ></h1>
+        <button type="button" class="add-task"> Принять </button>
+
     </div>
     <hr>
-    <div id="result">
-    </div>
+    <div id="result"></div>
 
     <div class="data">
-        <table class="data-table">
+        <table class = "task-table">
             <thead>
             <tr>
                 <th>НОМЕР</th>
@@ -47,58 +54,7 @@
             </table>
         </form>
     </div>
-    <script>
-        /**
-         * Функция форматирует строку с датой и временем в вид dd.MM.yy HH:mm:ss
-         *
-         *(вытащу отдельно, чтобы не писать везде, но пока лень)))
-         * @return {number} отформатированная строка в виде dd.MM.yy HH:mm:ss
-         * @param dateTimeString строка для форматирования.
-         */
-        function formatDateTime(dateTimeString) {
-            var dateTime = new Date(dateTimeString);
-            var day = dateTime.getDate();
-            var month = dateTime.getMonth() + 1;
-            var year = dateTime.getFullYear();
-            var hours = dateTime.getHours();
-            var minutes = dateTime.getMinutes();
-            var seconds = dateTime.getSeconds();
-            return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}
-${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-        }
-
-
-        const resultsList = document.getElementById('result'),
-            headerTask = document.getElementById('header'),
-            tableTask = document.querySelector('.data-table tbody')
-        new URLSearchParams(window.location.search).forEach((value, name) => {
-            let taskId = `${value}`
-            fetch('../json/task.json')
-                .then(response => response.json())
-                .then(data => {
-                    let needData = data.filter(item => item.idTask == taskId);
-                    needData.forEach(item => {
-                        headerTask.innerHTML = `<h1> Задание № ${item.numberTask}</h1>`
-                        resultsList.innerHTML = `
-                            <p>Работник: ${item.workerName}</p>
-                            <p>Дата выдачи: ${formatDateTime(item.dateIssue)}</p>
-                            <p>Дата принятия: ${formatDateTime(item.dateAccept)}</p>
-                        `
-
-                        // вывод данных в таблицу
-                        let row = document.createElement('tr');
-                        row.classList.add("content")
-                        row.innerHTML = `
-                    <td >${item.numberSP}</a></td>
-                    <td>${item.designSP}</td>
-                    <td>${item.nameSP}</td>
-                    <td>${item.typeSizeSP}</td>
-                    `;
-                        tableTask.appendChild(row);
-                    })
-                })
-        })
-    </script>
+    <script src="../scripts/taskpage.js"></script>
 </form>
 </body>
 </html>

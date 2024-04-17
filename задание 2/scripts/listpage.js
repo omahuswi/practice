@@ -1,46 +1,74 @@
 fetch('../json/listTask.json')
     .then(response => response.json())
     .then(data => {
-        const tableBody = document.querySelector('.data-table tbody')
-        const pagination = document.querySelector('#pagination');
-        let rowsCount = 10;//количество строк данных на одной странице
 
-        let active; //переменная для хранения активной кнопки отобращения страницы
+        /**
+         * функция возвращает путь до нужной страницы с передачей на неё идентификатора страницы
+         *
+         * @param id идентификатор задачи
+         */
+        function sendId(id) {
+            window.location.href = '../html/task.html?id=' + id;
+        }
 
-        let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
+        /**
+         * Функция отрисовывает кнопки пагинации в соответствии с переданной в неё текущей страницей
+         *
+         * @param pageCount количество страниц
+         * @param page текущая страница
+         * @param paginationList элемент в которыый выводим кнопки
+         */
+        function CreatePagination(pageCount, page, paginationList) {
+            let items = []//массив кнопок пагинации
 
+            function polymorph() {
+                let len2func = [];
+                for (let i = 0; i < arguments.length; i++)
+                    if (typeof (arguments[i]) == "function")
+                        len2func[arguments[i].length] = arguments[i];
+                return function () {
+                    return len2func[arguments.length].apply(this, arguments);
+                }
+            }
 
-        let items = []
+            let AddInfoInLiElement = polymorph(
+                function (elementText) {
+                    li = document.createElement("li")
+                    li.innerHTML = "...";
+                    items.push(li)
+                },
+                function (elementText, elementClass) {
+                    li = document.createElement("li")
+                    li.innerHTML = elementText;
+                    li.classList.add(elementClass);
+                    items.push(li)
+                },
+                function (elementText, eventType, eventEl) {
+                    li = document.createElement("li")
+                    li.innerHTML = elementText;
+                    li.addEventListener(eventType, (event) => {
+                        CreatePagination(pageCount, eventEl, paginationList)
+                    })
+                    items.push(li)
+                }
+            );
 
-
-        function CreatePagination(pageCount, page) {
-            pagination.innerHTML = ""
+            paginationList.innerHTML = ""
             let li
             let prevPage = page - 1;
             let nextPage = page + 1;
+
             //условие вывода кнопки предыдущей страницы
             if (page > 1) {
-                li = document.createElement("li")
-                li.innerHTML = "Пред";
-                li.addEventListener('click', (event) => {
-                    CreatePagination(pageCount, prevPage)
-                })
-                pagination.appendChild(li);
-                items.push(li)
+                AddInfoInLiElement("Предыдущая", 'click', prevPage)
             }
+
             //условие вывода кнопки первой страницы
             if (page > 2) {
-                li = document.createElement("li")
-                li.innerHTML = 1;
-                li.classList.add("num");
-                pagination.appendChild(li);
-                items.push(li)
+                AddInfoInLiElement(1, "num")
                 //условие вывода кнопки троеточия
                 if (page > 3) {
-                    li = document.createElement("li")
-                    li.innerHTML = "...";
-                    pagination.appendChild(li);
-                    items.push(li)
+                    AddInfoInLiElement("...")
                 }
             }
             //вывод кнопок трех кнопок страниц
@@ -54,7 +82,6 @@ fetch('../json/listTask.json')
                         li.classList.add("active")
                         active = li
                     }
-                    pagination.appendChild(li);
                     items.push(li)
                 }
             }
@@ -63,42 +90,27 @@ fetch('../json/listTask.json')
             if (page < pageCount - 1) {
                 //условие вывода кнопки троеточия
                 if (page < pageCount - 2) {
-                    li = document.createElement("li")
-                    li.innerHTML = "...";
-                    pagination.appendChild(li);
-                    items.push(li)
+                    AddInfoInLiElement("...")
                 }
-                li = document.createElement("li")
-                li.innerHTML = pageCount;
-                li.classList.add("num");
-                pagination.appendChild(li);
-                items.push(li)
+                AddInfoInLiElement(pageCount, "num")
             }
 
             //условие вывода кнопки следующей страницы
             if (page < pageCount) {
-                li = document.createElement("li")
-                li.innerHTML = "След";
-                li.addEventListener('click', (event) => {
-                    CreatePagination(pageCount, nextPage)
-                })
-                pagination.appendChild(li);
-                items.push(li)
+                AddInfoInLiElement("Следующая", 'click', nextPage)
             }
 
             //присвоение события кнопкам пагинации
             for (let item of items) {
                 if (item.classList.contains('num')) {
                     item.addEventListener('click', function () {
-                        CreatePagination(pageCount, +this.innerHTML)
+                        CreatePagination(pageCount, +this.innerHTML, pagination)
                     })
                 }
-
+                paginationList.appendChild(item);
             }
             displayPage(page)//вызов функции отрисовки данных активной страницы
         }
-        CreatePagination(pageCount, 1)//вызов функции отрисовки пагинаци
-
 
         /**
          *отрисовка нужнной страницы с данными из JSON файла (вызывается при
@@ -115,20 +127,19 @@ fetch('../json/listTask.json')
             paginatedData.forEach(item => {
                 let row = document.createElement('tr');
 
+                var selected_row = null;
+
+                function select_row(row) {
+                    row.parentNode.querySelectorAll('tr').forEach(row => row.classList.remove('selected')); // Удаляем класс 'selected' у всех строк
+                    row.classList.add('selected'); // Добавляем класс 'selected' кликнутой строке
+                }
+
                 //присвоение события перехода на страницу с данными о задании каждой строке таблицы
                 row.setAttribute('id', `${item.idTask}`)
                 row.addEventListener('click', function () {
+                    select_row(row)
                     sendId(row.id)
                 });
-
-                /**
-                 * функция возвращает путь до нужной страницы с передачей на неё идентификатора страницы
-                 *
-                 * @param id идентификатор задачи
-                 */
-                function sendId(id) {
-                    window.location.href = '../html/task.html?id=' + id;
-                }
 
                 //отрисовка таблицы с данными
                 row.classList.add("content")
@@ -143,6 +154,14 @@ fetch('../json/listTask.json')
                 tableBody.appendChild(row);
             })
         }
+
+        const tableBody = document.querySelector('.data-table tbody')
+        const pagination = document.querySelector('#pagination');
+        let rowsCount = 10;//количество строк данных на одной странице
+        let active; //переменная для хранения активной кнопки отобращения страницы
+        let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
+
+        CreatePagination(pageCount, 1, pagination)//вызов функции отрисовки пагинаци
     })
 
 /**
