@@ -26,33 +26,23 @@
     <div class="data">
         <table class = "task-table">
             <thead>
-            <tr>
-                <th>НОМЕР</th>
+             <tr>
+                <th rowspan="2">НОМЕР</th>
                 <th>ОБОЗНАЧЕНИЕ</th>
+                <th rowspan="2">ТИПОРАЗМЕР</th>
+                <th colspan="2">ОПЕРАЦИЯ</th>
+                <th colspan="3">КОЛИЧЕСТВО</th>
+            </tr>
+            <tr>
                 <th>НАИМЕНОВАНИЕ</th>
-                <th>ТИПОРАЗМЕР</th>
+                <th>НОМЕР</th>
+                <th>НАИМЕНОВАНИЕ</th>
+                <th>ВЫДАННЫЕ</th>
+                <th>ПРИНЯТЫЕ</th>
+                <th>ГОТОВНОСТЬ</th>
             </tr>
             </thead>
-            <tbody>
-            </tbody>
         </table>
-        <form class="info">
-            <!--            таблица с операциями для каждой детали(пока никуда не выводится )-->
-            <!--            <p>Операции</p>-->
-            <table id="info-table" class="hidden">
-                <thead>
-                <tr>
-                    <th>НОМЕР</th>
-                    <th>НАИМЕНОВАНИЕ</th>
-                    <th>КОЛИЧЕСТВО ВЫДАННОГО</th>
-                    <th>КОЛИЧЕСТВО ПРИНЯТОГО</th>
-                    <th>ГОТОВНОСТЬ</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </form>
     </div>
     <script src="../scripts/taskpage.js"></script>
 </form>

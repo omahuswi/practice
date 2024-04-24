@@ -145,6 +145,7 @@ header.main {
         border: 1px solid var(--additional-dark);
         width: 100%;
         overflow: hidden;
+        padding-bottom: 10px;
     }
 
     .operation, .sp {
