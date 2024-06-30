@@ -28,13 +28,11 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
         .then(response => response.json())
         .then(data => {
             function addOperations(data, numberSP) {
-
             }
 
             function contains(arr, elem) {
                 return arr.prototype.includes(elem);
             }
-
 
             let needData = data.filter(item => item.idTask == taskId); //список данных одного задания
 
@@ -43,10 +41,7 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
             let numSP;
             needData.forEach(item => {
                 numSP = item.numberSP
-                if (showSP.indexOf(numSP) !== -1) {
-                    // console.log('lflflfl')
-                } else {
-                    // console.log('dpdppdpdpd')
+                if (showSP.indexOf(numSP) === -1) {
                     showSP.push(numSP)
                 }
             })
@@ -68,7 +63,7 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     let row = document.createElement('tbody');
                     row.classList.add("content")
                     row.innerHTML = `
-                    <tr>
+                    <tr class = "item">
                         <td rowspan="2">${item.numberSP}</td>                        
                         <td>${item.nameSP}</td>
                         <td rowspan="2">${item.typeSizeSP}</td>
@@ -81,27 +76,44 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     <tr>
                         <td>${item.designSP}</td>
                     </tr> 
-                    <tr class = "operation" >
-                            
+                    <tr class = "operation" >   
+                                         
+                                              
                     </tr>                         
                     `
 
-
                     for (let i = 1; i < needOperations.length; i++) {
-                        let opRow = row.querySelector('.operation')
-                        opRow.innerHTML = `
+                        let opEl = row.querySelector('.operation')
+                        opEl.innerHTML = `
+                        <td colSpan="8">
+                        <table class = "additional-operation" id = ${item.numberSP}>   
                         <tr>
-                        <td rowspan = {2*needOperations.length} colspan = "3"> </td>
-                        <td rowspan="2">${needOperations[i].numberOperation}</td>
-                        <td rowspan="2">${needOperations[i].nameOperation}</td>
-                        <td rowspan="2">${needOperations[i].countIssued}</td>
-                        <td rowspan="2">${needOperations[i].countAccepted}</td>
-                        <td rowspan="2">${needOperations[i].percentage}</td>
+                        <td rowspan = ${needOperations.length} colspan = "3"> </td>
+                        <td rowspan = "2">${needOperations[i].numberOperation}</td>
+                        <td rowspan = "2">${needOperations[i].nameOperation}</td>
+                        <td rowspan = "2">${needOperations[i].countIssued}</td>
+                        <td rowspan = "2">${needOperations[i].countAccepted}</td>
+                        <td rowspan = "2">${needOperations[i].percentage}</td>
                         </tr>
-                        `
-                        row.appendChild(opRow);
+                        </table>
+                        </td> `
+                        row.appendChild(opEl);
+
+
                     }
+
+                    row.addEventListener('click', function(){
+                             let table = row.querySelector("td:first-child");
+                            if (table) {
+                                let idValue = table.textContent; // Получаем значение ячейки
+                                let elementToChange = document.getElementById(idValue); // Находим элемент по id
+                                if (elementToChange) {
+                                    elementToChange.classList.add("active"); // Изменяем класс найденного элемента
+                                }
+                            }
+                        })
                     tableTask.appendChild(row);
+
 
                 } else {
                     console.log(`Деталь ${item.numberSP} уже выводилась`)

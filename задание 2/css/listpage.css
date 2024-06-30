@@ -143,18 +143,20 @@ header.main {
 
     td {
         border: 1px solid var(--additional-dark);
-        width: 100%;
         overflow: hidden;
         padding-bottom: 10px;
     }
 
-    .operation, .sp {
+    .additional-operation, .sp {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
     }
-    .operation thead{
+    .additional-operation thead{
         box-shadow: none;
+    }
+    .additional-operation{
+        display: none;
     }
 }
 
@@ -212,6 +214,10 @@ header.main {
         background-color: var(--additional2-light);
     }
 }
+
+/*.additional-operation{*/
+/*    max-height: 0;*/
+/*}*/
 
 
 #pagination {

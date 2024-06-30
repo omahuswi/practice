@@ -2,6 +2,12 @@ fetch('../json/listTask.json')
     .then(response => response.json())
     .then(data => {
 
+        sortArrayByParam(data, 'departTask');
+        function sortArrayByParam(array, param) {
+            array.sort((a, b) => a[param] > b[param] ? 1 : -1);
+        }
+
+
         /**
          * функция возвращает путь до нужной страницы с передачей на неё идентификатора страницы
          *

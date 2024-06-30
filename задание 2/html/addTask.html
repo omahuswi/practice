@@ -1,33 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Новое задание</title>
     <link rel="stylesheet" href="../css/listpage.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 <body>
-<form class="main">
+
+
+<form class="main" id = "crt-nw-frm">
     <div class="header">
         <h1>Новое задание</h1>
     </div>
     <hr>
-    <div>
-        <label for="numbertask">Номер задания</label>
-        <input type="text" name="numberTask" id="numbertask">
+    <div class="mb-3">
+        <input class="form-control" type="text" name="numberTask" id="numberTask" placeholder="Номер задания">
     </div>
-    <div>
-        <label for="numberTask">Номер задания</label>
-        <input type="text" name="numberTask" id="numbertask">
+    <div class="mb-3">
+        <input class="form-control" type="text" name="workerName" id="workerName" placeholder="ФИО работника">
     </div>
-    <div>
-        <label for="numberTask">Номер задания</label>
-        <input type="text" name="numberTask" id="numbertask">
+    <div class="mb-3">
+        <input class="form-control" type="text" name="dateIssue" id="dateIssue" placeholder="Дата выдачи">
     </div>
-    <div>
-        <label for="numberTask">Номер задания</label>
-        <input type="text" name="numberTask" id="numbertask">
-    </div>
+    <button class="btn btn-primary">Создать</button>
 </form>
-
+<script src="../scripts/addNewTask.js"></script>
 </body>
 </html>
