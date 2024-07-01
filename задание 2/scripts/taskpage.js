@@ -64,17 +64,17 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     row.classList.add("content")
                     row.innerHTML = `
                     <tr class = "item">
-                        <td rowspan="2">${item.numberSP}</td>                        
-                        <td>${item.nameSP}</td>
-                        <td rowspan="2">${item.typeSizeSP}</td>
-                        <td rowspan="2">${needOperations[0].numberOperation}</td>
-                        <td rowspan="2">${needOperations[0].nameOperation}</td>
-                        <td rowspan="2">${needOperations[0].countIssued}</td>
-                        <td rowspan="2">${needOperations[0].countAccepted}</td>
-                        <td rowspan="2">${needOperations[0].percentage}</td>
+                        <td rowspan="2">${item.numberSP ? item.numberSP : ''}</td>                        
+                        <td>${item.designSP ? item.designSP : ''}</td>
+                        <td rowspan="2">${item.typeSizeSP ? item.typeSizeSP : ''}</td>
+                        <td rowspan="2">${needOperations[0].numberOperation ? needOperations[0].numberOperation : ''}</td>
+                        <td rowspan="2">${needOperations[0].nameOperation ? needOperations[0].nameOperation : ''}</td>
+                        <td rowspan="2">${needOperations[0].countIssued ? needOperations[0].countIssued : ''}</td>
+                        <td rowspan="2">${needOperations[0].countAccepted ? needOperations[0].countAccepted : ''}</td>
+                        <td rowspan="2">${needOperations[0].percentage ? needOperations[0].percentage : ''}</td>
                     </tr>
                     <tr>
-                        <td>${item.designSP}</td>
+                        <td>${item.nameSP ? item.nameSP : ''}</td>
                     </tr> 
                     <tr class = "operation" >   
                                          
@@ -89,11 +89,11 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                         <table class = "additional-operation" id = ${item.numberSP}>   
                         <tr>
                         <td rowspan = ${needOperations.length} colspan = "3"> </td>
-                        <td rowspan = "2">${needOperations[i].numberOperation}</td>
-                        <td rowspan = "2">${needOperations[i].nameOperation}</td>
-                        <td rowspan = "2">${needOperations[i].countIssued}</td>
-                        <td rowspan = "2">${needOperations[i].countAccepted}</td>
-                        <td rowspan = "2">${needOperations[i].percentage}</td>
+                        <td rowspan = "2">${needOperations[i].numberOperation ? needOperations[i].numberOperation : ''}</td>
+                        <td rowspan = "2">${needOperations[i].nameOperation ? needOperations[i].nameOperation : ''}</td>
+                        <td rowspan = "2">${needOperations[i].countIssued ? needOperations[i].countIssued : ''}</td>
+                        <td rowspan = "2">${needOperations[i].countAccepted ? needOperations[i].countAccepted : ''}</td>
+                        <td rowspan = "2">${needOperations[i].percentage ? needOperations[i].percentage : ''}</td>
                         </tr>
                         </table>
                         </td> `

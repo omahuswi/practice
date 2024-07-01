@@ -7,7 +7,6 @@
     --additional3-light: #e1e5e8;
 }
 
-
 *, *::after, *::before {
     margin: 0;
     padding: 0;
@@ -15,11 +14,21 @@
     font-family: "Bodoni MT Poster Compressed", monospace;
 }
 
+#filter-form {
+    background: var(--background);
+    width: 350px;
+    padding: 2%;
+    color: var(--text);
+    border-right: 5px solid var(--additional-dark);
+}
+
+.container {
+    display: flex;
+}
 
 hr {
     margin: 10px 0;
 }
-
 
 body {
     background: radial-gradient(var(--additional-dark), var(--background));
@@ -40,6 +49,7 @@ header.main {
     background: var(--background);
     border-radius: 20px;
     margin: 20px;
+    flex: 1;
 }
 
 
@@ -62,7 +72,6 @@ header.main {
 
 }
 
-
 #search {
     padding: 7px 10px;
     border: 1px solid var(--additional-dark);
@@ -79,8 +88,25 @@ header.main {
     border-color: var(--text);
 }
 
+.checkbox {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
 
-.add-task {
+    div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px; /* пространство между строками */
+        margin-left: 10px;
+    }
+
+    input {
+        margin-right: 5px; /* отступ между input и label */
+    }
+}
+
+
+.button {
     border: 1px solid var(--additional-dark);
     outline: none;
     color: var(--text);
@@ -91,14 +117,35 @@ header.main {
     padding: 10px 15px;
     cursor: pointer;
 }
+.main-button {
+        border: 1px solid var(--text);
+        outline: none;
+        color: var(--background);
+        background: var(--text);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
 
-.add-task:hover {
+.main-button:hover {
+    border-color: var(--text);
+    background: var(--additional-dark);
+    transition: 0.3s;
+}
+
+.main-button:focus {
+    background: var(--additional-dark);
+}
+
+.button:hover {
     border-color: var(--text);
     background: var(--additional3-light);
     transition: 0.3s;
 }
 
-.add-task:focus {
+.button:focus {
     background: var(--additional2-light);
 }
 
@@ -107,10 +154,11 @@ header.main {
     display: none;
 }
 
-.back{
-    margin:20px;
+.back {
+    margin: 20px;
 }
-.back:hover, .back:focus{
+
+.back:hover, .back:focus {
     color: var(--text);
     cursor: pointer;
 }
@@ -152,10 +200,12 @@ header.main {
         border-collapse: collapse;
         table-layout: fixed;
     }
-    .additional-operation thead{
+
+    .additional-operation thead {
         box-shadow: none;
     }
-    .additional-operation{
+
+    .additional-operation {
         display: none;
     }
 }
