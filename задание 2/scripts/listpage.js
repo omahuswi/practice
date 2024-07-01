@@ -1,3 +1,4 @@
+//функция отображения данных на странице
 function ShowListTask() {
     fetch('../json/listTask.json')
         .then(response => response.json())
@@ -10,7 +11,7 @@ function ShowListTask() {
                 dateAcceptEnd = document.getElementById('dateAcceptEnd').value
 
             //вот тут проверяется, чтобы оба поля временного интервала были заполнены, и только тогда фильтруем данные.
-            // по сути стоит подсовывать дефолтные значения, но это проблема будещей меня
+            // по сути стоит подсовывать дефолтные значения, но это проблема будущей меня
             if (dateIssueBegin.toString() !== '' && dateIssueEnd.toString() !== ' ') data = filterDate(data, 'dateIssue', dateIssueBegin, dateIssueEnd)
             if (dateAcceptBegin.toString() !== '' && dateAcceptEnd.toString() !== ' ') data = filterDate(data, 'dateAccept', dateAcceptBegin, dateAcceptEnd)
 
@@ -226,7 +227,6 @@ ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${
 }
 
 //отображение и скрытие панели фильтров
-
 document.getElementById('filter-button').onclick = function () {
     const content = document.getElementById('filter-form');
     if (content.style.display === 'block') {
@@ -234,7 +234,7 @@ document.getElementById('filter-button').onclick = function () {
     } else {
         content.style.display = 'block'; // Если форма закрыта, показываем её
         document.getElementById('filter-form').addEventListener('submit', function (event) {
-            event.preventDefault()
+            event.preventDefault()//Отмена события
             ShowListTask()
         })
     }
