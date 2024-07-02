@@ -5,10 +5,10 @@ function ShowListTask() {
         .then(data => {
             //фильтрация по датам
             //считываем даты из полей
-            const dateIssueBegin = document.getElementById('dateIssueBegin').value,
-                dateIssueEnd = document.getElementById('dateIssueEnd').value,
-                dateAcceptBegin = document.getElementById('dateAcceptBegin').value,
-                dateAcceptEnd = document.getElementById('dateAcceptEnd').value
+            const dateIssueBegin = document.getElementById('date-issue-begin').value,
+                dateIssueEnd = document.getElementById('date-issue-end').value,
+                dateAcceptBegin = document.getElementById('date-accept-begin').value,
+                dateAcceptEnd = document.getElementById('date-accept-end').value
 
             //вот тут проверяется, чтобы оба поля временного интервала были заполнены, и только тогда фильтруем данные.
             // по сути стоит подсовывать дефолтные значения, но это проблема будущей меня
@@ -233,12 +233,41 @@ document.getElementById('filter-button').onclick = function () {
         content.style.display = 'none'; // Если форма открыта, скрываем её
     } else {
         content.style.display = 'block'; // Если форма закрыта, показываем её
+
         document.getElementById('filter-form').addEventListener('submit', function (event) {
             event.preventDefault()//Отмена события
             ShowListTask()
         })
+
+        changeDateFilter("date-accept")
+        changeDateFilter("date-issue")
     }
 }
+
+function changeDateFilter(nameInput) {
+    const radioButtons = document.querySelectorAll(`input[type=radio][name=${nameInput}]`),
+        dateBegin = document.getElementById(`${nameInput}-begin`),
+        dateEnd = document.getElementById(`${nameInput}-end`)
+    dateCh(dateBegin)
+    dateCh(dateEnd)
+
+    function dateCh(dateInput) {
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function () {
+                dateInput.value = dateInput.name === "begin" ? this.value === 'today' ? new Date().toISOString().slice(0, 10)
+                        : this.value === 'thisWeek' ? new Date().toISOString().slice(0, 10)
+                            : this.value === 'thisMonth' ? new Date().toISOString().slice(0, 10)
+                                : '' :
+                    this.value === 'today' ? new Date().toISOString().slice(0, 10)
+                        : this.value === 'thisWeek' ? new Date().toISOString().slice(0, 10)
+                            : this.value === 'thisMonth' ? new Date().toISOString().slice(0, 10)
+                                : ''
+            });
+        });
+    }
+
+}
+
 
 
 

@@ -26,7 +26,7 @@
                     <input type="search" placeholder="Поиск" id="search">
                 </div>
                 <div>
-                    <button type=button class="button" id = "filter-button"> Фильтры</button>
+                    <button type=button class="button" id="filter-button"> Фильтры</button>
                 </div>
             </div>
         </header>
@@ -36,8 +36,8 @@
             <table class="data-table">
                 <thead>
                 <tr>
-                    <th id="numberTask" >НОМЕР<span class="icon-sort">&#8593;</span></th>
-                    <th id="departTask" class = "sort" >ЦЕХ<span class="icon-sort">&#8593;</span></th>
+                    <th id="numberTask">НОМЕР<span class="icon-sort">&#8593;</span></th>
+                    <th id="departTask" class="sort">ЦЕХ<span class="icon-sort">&#8593;</span></th>
                     <th>МАСТЕР<span class="icon-sort">&#8593;</span></th>
                     <th>РАБОТНИК<span class="icon-sort">&#8593;</span></th>
                     <th>ДАТА ВЫДАЧИ<span class="icon-sort">&#8593;</span></th>
@@ -56,63 +56,65 @@
         </div>
 
     </form>
-    <form action="" id = "filter-form" class="hidden">
+    <form action="" id="filter-form" class="hidden">
         <div>
             <h3>Фильтры</h3>
-            <div>
-                <h3>Дата выдачи</h3>
+
+            <div id="date-issue">
+                <h4>Дата выдачи</h4>
                 <div class="interval">
                     <label> с</label>
-                    <input type="date" id="dateIssueBegin"/>
+                    <input type="date" id="date-issue-begin" name="begin"/>
                     <label> по</label>
-                    <input type="date" id="dateIssueEnd"/>
+                    <input type="date" id="date-issue-end" name="end"/>
                 </div>
 
                 <div class="checkbox">
                     <div>
-                        <input type="radio"  name="dateIssue">
-                        <label>Сегодня</label>
+                        <label><input type="radio" name="date-issue" value="all">Все</label>
                     </div>
                     <div>
-                        <input type="radio" name="dateIssue">
-                        <label>На этой неделе</label>
+                        <label><input type="radio" name="date-issue" value="today">Сегодня</label>
                     </div>
                     <div>
-                        <input type="radio" name="dateIssue">
-                        <label>В этом месяце</label>
+                        <label><input type="radio" name="date-issue" value="thisWeek">На этой неделе</label>
+                    </div>
+                    <div>
+                        <label><input type="radio" name="date-issue" value="thisMonth">В этом месяце</label>
                     </div>
                 </div>
             </div>
-
-            <div>
-                <h3>Дата принятия</h3>
+            <hr/>
+            <div id="date-accept">
+                <h4>Дата принятия</h4>
                 <div class="interval">
-                    <label> с</label>
-                    <input type="date" id="dateAcceptBegin"/>
-                    <label> по</label>
-                    <input type="date" id="dateAcceptEnd"/>
+                    <label for="date-accept-begin"> с</label>
+                    <input type="date" id="date-accept-begin" name="begin"/>
+                    <label for="date-accept-end"> по</label>
+                    <input type="date" id="date-accept-end" name="end"/>
                 </div>
 
                 <div class="checkbox">
                     <div>
-                        <input type="radio" name="dateAccept">
-                        <label>Сегодня</label>
+                        <label><input type="radio" name="date-accept" value="all">Все</label>
                     </div>
                     <div>
-                        <input type="radio" name="dateAccept">
-                        <label>На этой неделе</label>
+                        <label><input type="radio" name="date-accept" value="today">Сегодня</label>
                     </div>
                     <div>
-                        <input type="radio" name="dateAccept">
-                        <label>В этом месяце</label>
+                        <label><input type="radio" name="date-accept" value="thisWeek">На этой неделе</label>
                     </div>
+                    <div>
+                        <label><input type="radio" name="date-accept" value="thisMonth">В этом месяце</label>
+                    </div>
+
                 </div>
             </div>
 
-
-            <div id = "filter-buttons">
-                <button class="button"> Очистить</button>
-                <button type="submit" class="main-button" id = 'filter'> Применить</button>
+            <hr/>
+            <div id="filter-buttons">
+                <button class="button"> Сбросить </button>
+                <button type="submit" class="main-button" id='filter'> Применить</button>
             </div>
         </div>
     </form>
