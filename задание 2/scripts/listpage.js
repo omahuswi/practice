@@ -1,3 +1,5 @@
+ShowListTask()
+
 //функция отображения данных на странице
 function ShowListTask() {
     fetch('../json/listTask.json')
@@ -5,15 +7,33 @@ function ShowListTask() {
         .then(data => {
             //фильтрация по датам
             //считываем даты из полей
-            const dateIssueBegin = document.getElementById('date-issue-begin').value,
-                dateIssueEnd = document.getElementById('date-issue-end').value,
-                dateAcceptBegin = document.getElementById('date-accept-begin').value,
-                dateAcceptEnd = document.getElementById('date-accept-end').value
+            const dateIssueBegin = document.getElementById('date-issue-begin').value ?
+                    new Date(document.getElementById('date-issue-begin').value) : null,
+                dateIssueEnd = document.getElementById('date-issue-end').value ?
+                    new Date(document.getElementById('date-issue-end').value) : null,
+                dateAcceptBegin = document.getElementById('date-accept-begin').value ?
+                    new Date(document.getElementById('date-accept-begin').value) : null,
+                dateAcceptEnd = document.getElementById('date-accept-end').value ?
+                    new Date(document.getElementById('date-accept-end').value) : null
 
             //вот тут проверяется, чтобы оба поля временного интервала были заполнены, и только тогда фильтруем данные.
             // по сути стоит подсовывать дефолтные значения, но это проблема будущей меня
-            if (dateIssueBegin.toString() !== '' && dateIssueEnd.toString() !== ' ') data = filterDate(data, 'dateIssue', dateIssueBegin, dateIssueEnd)
-            if (dateAcceptBegin.toString() !== '' && dateAcceptEnd.toString() !== ' ') data = filterDate(data, 'dateAccept', dateAcceptBegin, dateAcceptEnd)
+            if (dateIssueBegin !== null && dateIssueEnd !== null)
+                data = filterDate(data, 'dateIssue', dateIssueBegin, dateIssueEnd)
+            if (dateAcceptBegin !== null && dateAcceptEnd !== null)
+                data = filterDate(data, 'dateAccept', dateAcceptBegin, dateAcceptEnd)
+
+            //сортировка по отмеченному столбцу (пока по дефолту по цеху)
+            let sortParam = document.querySelector('.sort').id;
+            sortArrayByParam(data, sortParam)
+
+            const tableBody = document.querySelector('.data-table tbody')
+            const pagination = document.querySelector('#pagination');
+            let rowsCount = 10;//количество строк данных на одной странице
+            let active; //переменная для хранения активной кнопки отобращения страницы
+            let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
+
+            CreatePagination(pageCount, 1, pagination)//вызов функции отрисовки пагинаци
 
             /**
              * Функция фильтрации списка данных по датам
@@ -24,20 +44,18 @@ function ShowListTask() {
              * @returns {*[]} отфильтрованный массив данных
              */
             function filterDate(arr, prop, valueBegin, valueEnd) {
-                let valueDateBegin = new Date(valueBegin)
-                let valueDateEnd = new Date(valueEnd)
+                let valueDateBegin = new Date(valueBegin.getFullYear(), valueBegin.getMonth(), valueBegin.getDate())
+                let valueDateEnd = new Date(valueEnd.getFullYear(), valueEnd.getMonth(), valueEnd.getDate())
+                console.log(valueDateEnd)
 
                 let newArray = data.map(item => {
                     let date = new Date(item[prop]);
+                    date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                     //возвращаем ненулевые объекты, значения заданного параметра которых попадют в интервал
                     return (date >= valueDateBegin && date <= valueDateEnd) ? item : null;
                 }).filter(item => item !== null);
                 return newArray;
             }
-
-            //сортировка по отмеченному столбцу (пока по дефолту по цеху)
-            let sortParam = document.querySelector('.sort').id;
-            sortArrayByParam(data, sortParam);
 
             function sortArrayByParam(array, param) {
                 array.sort((a, b) => a[param] > b[param] ? 1 : -1);
@@ -142,14 +160,14 @@ function ShowListTask() {
                 }
 
                 //присвоение события кнопкам пагинации
-                for (let item of items) {
+                items.forEach(item => {
                     if (item.classList.contains('num')) {
                         item.addEventListener('click', function () {
                             CreatePagination(pageCount, +this.innerHTML, pagination)
                         })
                     }
                     paginationList.appendChild(item);
-                }
+                })
                 displayPage(page)//вызов функции отрисовки данных активной страницы
             }
 
@@ -195,18 +213,9 @@ function ShowListTask() {
                     tableBody.appendChild(row);
                 })
             }
-
-            const tableBody = document.querySelector('.data-table tbody')
-            const pagination = document.querySelector('#pagination');
-            let rowsCount = 10;//количество строк данных на одной странице
-            let active; //переменная для хранения активной кнопки отобращения страницы
-            let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
-
-            CreatePagination(pageCount, 1, pagination)//вызов функции отрисовки пагинаци
         })
 }
 
-ShowListTask()
 
 /**
  * Функция форматирует строку с датой и временем в вид dd.MM.yy HH:mm:ss
@@ -225,56 +234,3 @@ function formatDateTime(dateTimeString) {
     return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}
 ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }
-
-//отображение и скрытие панели фильтров
-document.getElementById('filter-button').onclick = function () {
-    const content = document.getElementById('filter-form');
-    if (content.style.display === 'block') {
-        content.style.display = 'none'; // Если форма открыта, скрываем её
-    } else {
-        content.style.display = 'block'; // Если форма закрыта, показываем её
-
-        document.getElementById('filter-form').addEventListener('submit', function (event) {
-            event.preventDefault()//Отмена события
-            ShowListTask()
-        })
-
-        changeDateFilter("date-accept")
-        changeDateFilter("date-issue")
-    }
-}
-
-function changeDateFilter(nameInput) {
-    const radioButtons = document.querySelectorAll(`input[type=radio][name=${nameInput}]`),
-        dateBegin = document.getElementById(`${nameInput}-begin`),
-        dateEnd = document.getElementById(`${nameInput}-end`)
-    dateCh(dateBegin)
-    dateCh(dateEnd)
-
-    function dateCh(dateInput) {
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', function () {
-                dateInput.value = dateInput.name === "begin" ? this.value === 'today' ? new Date().toISOString().slice(0, 10)
-                        : this.value === 'thisWeek' ? new Date().toISOString().slice(0, 10)
-                            : this.value === 'thisMonth' ? new Date().toISOString().slice(0, 10)
-                                : '' :
-                    this.value === 'today' ? new Date().toISOString().slice(0, 10)
-                        : this.value === 'thisWeek' ? new Date().toISOString().slice(0, 10)
-                            : this.value === 'thisMonth' ? new Date().toISOString().slice(0, 10)
-                                : ''
-            });
-        });
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
