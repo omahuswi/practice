@@ -14,26 +14,19 @@
     font-family: "Bodoni MT Poster Compressed", monospace;
 }
 
-#filter-form {
-    background: var(--background);
-    width: 350px;
-    padding: 2%;
-    color: var(--text);
-    border-right: 5px solid var(--additional-dark);
-}
-
-.container {
-    display: flex;
-}
-
-hr {
-    margin: 10px 0;
-}
-
+/*-------------------блоки-----------------------------*/
 body {
     background: radial-gradient(var(--additional-dark), var(--background));
     color: var(--text);
     font-size: 0.9rem;
+}
+
+.main {
+    padding: 20px;
+    background: var(--background);
+    border-radius: 20px;
+    margin: 20px;
+    flex: 1;
 }
 
 header.main {
@@ -44,12 +37,36 @@ header.main {
     border-radius: 0;
 }
 
-.main {
-    padding: 20px;
+hr {
+    margin: 10px 0;
+}
+
+/*----------------- элементы-------------------------------*/
+input[type="date"] {
+    padding: 10px 3px;
+    width: 110px;
+    border: 1px solid var(--additional-dark);
+    outline: none;
+    color: var(--text);
+    border-radius: 10px;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+input[type="date"]:focus, input[type="date"]:hover {
+    border-color: var(--text);
+}
+
+#filter-form {
     background: var(--background);
-    border-radius: 20px;
-    margin: 20px;
-    flex: 1;
+    width: 350px;
+    padding: 2%;
+    color: var(--text);
+    border-right: 5px solid var(--additional-dark);
+}
+
+.container {
+    display: flex;
 }
 
 
@@ -69,7 +86,6 @@ header.main {
 .search {
     display: flex;
     align-items: center;
-
 }
 
 #search {
@@ -117,17 +133,18 @@ header.main {
     padding: 10px 15px;
     cursor: pointer;
 }
+
 .main-button {
-        border: 1px solid var(--text);
-        outline: none;
-        color: var(--background);
-        background: var(--text);
-        border-radius: 10px;
-        font-size: 0.9rem;
-        font-weight: bold;
-        padding: 10px 15px;
-        cursor: pointer;
-    }
+    border: 1px solid var(--text);
+    outline: none;
+    color: var(--background);
+    background: var(--text);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+}
 
 .main-button:hover {
     border-color: var(--text);
@@ -163,7 +180,7 @@ header.main {
     cursor: pointer;
 }
 
-.task-table {
+table {
     padding: 20px;
     border-collapse: collapse;
     width: 100%;
@@ -176,52 +193,16 @@ header.main {
     text-align: center;
     table-layout: fixed;
 
-    thead {
-        box-shadow: 0 5px 10px var(--additional-dark);
+    td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(5) {
+        text-align: left;
+        padding: 10px 5px;
     }
 
-    th {
-        padding: 12px 15px;
-        letter-spacing: 0.1rem;
-        font-size: 0.9rem;
-        font-weight: 900;
-        border: 1px solid var(--additional-dark);
-        cursor: pointer;
+    td:nth-child(4), td:nth-child(6), td:nth-child(7), td:nth-child(8)  {
+        text-align: right;
+        padding: 10px 5px;
     }
 
-    td {
-        border: 1px solid var(--additional-dark);
-        overflow: hidden;
-        padding-bottom: 10px;
-    }
-
-    .additional-operation, .sp {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
-
-    .additional-operation thead {
-        box-shadow: none;
-    }
-
-    .additional-operation {
-        display: none;
-    }
-}
-
-.data-table {
-    padding: 20px;
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 10px;
-    background-color: var(--background);
-    border-radius: 20px;
-    box-shadow: 0 5px 10px var(--additional-dark);
-    overflow: hidden;
-    outline: none;
-    text-align: center;
-    table-layout: fixed;
 
     thead {
         box-shadow: 0 5px 10px var(--additional-dark);
@@ -239,10 +220,36 @@ header.main {
     td, th {
         border: 1px solid var(--additional-dark);
         padding: 10px 5px;
-        width: auto;
         overflow: hidden;
     }
 
+}
+
+.task-table {
+    td.operation {
+        padding: 0;
+        border-right: none;
+        border-top: none;
+    }
+
+    .additional-operation {
+        margin: 0;
+        table-layout: fixed;
+        padding: 0;
+        box-shadow: none;
+        border-collapse: collapse;
+        border-radius: 0;
+
+    }
+
+    .additional-operation td:nth-child(1) {
+        border-left: none;
+        border-bottom: none;
+        border-top: none;
+    }
+}
+
+.data-table {
     td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6) {
         text-align: left;
         padding: 20px 10px;
@@ -251,7 +258,6 @@ header.main {
     td:nth-child(2) {
         text-align: right;
         padding: 20px 10px
-
     }
 
     tr.content:hover {
@@ -264,10 +270,6 @@ header.main {
         background-color: var(--additional2-light);
     }
 }
-
-/*.additional-operation{*/
-/*    max-height: 0;*/
-/*}*/
 
 
 #pagination {

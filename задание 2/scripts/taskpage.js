@@ -65,53 +65,56 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     row.innerHTML = `
                     <tr class = "item">
                         <td rowspan="2">${item.numberSP ? item.numberSP : ''}</td>                        
-                        <td>${item.designSP ? item.designSP : ''}</td>
+                        <td ${item.nameSP ? '' : 'rowspan="2"'}>${item.designSP ? item.designSP : ''}</td>
                         <td rowspan="2">${item.typeSizeSP ? item.typeSizeSP : ''}</td>
                         <td rowspan="2">${needOperations[0].numberOperation ? needOperations[0].numberOperation : ''}</td>
                         <td rowspan="2">${needOperations[0].nameOperation ? needOperations[0].nameOperation : ''}</td>
                         <td rowspan="2">${needOperations[0].countIssued ? needOperations[0].countIssued : ''}</td>
                         <td rowspan="2">${needOperations[0].countAccepted ? needOperations[0].countAccepted : ''}</td>
                         <td rowspan="2">${needOperations[0].percentage ? needOperations[0].percentage : ''}</td>
-                    </tr>
-                    <tr>
-                        <td>${item.nameSP ? item.nameSP : ''}</td>
-                    </tr> 
-                    <tr class = "operation" >   
-                                         
-                                              
-                    </tr>                         
-                    `
-
-                    for (let i = 1; i < needOperations.length; i++) {
-                        let opEl = row.querySelector('.operation')
-                        opEl.innerHTML = `
-                        <td colSpan="8">
-                        <table class = "additional-operation" id = ${item.numberSP}>   
+                    </tr>                                                  
+                    ${item.nameSP ? `
                         <tr>
-                        <td rowspan = ${needOperations.length} colspan = "3"> </td>
+                            <td>${item.nameSP}</td>
+                        </tr>` : `
+                        <tr>                            
+                        </tr>`}
+                    <tr class="operation">
+                    <td class="operation" colspan="8">
+                        <table class = "additional-operation" id = ${item.numberSP}></table>
+                        </td> 
+                    </tr>`
+
+
+                    console.log(needOperations)
+                    for (let i = 1; i < needOperations.length; i++) {
+                        let op = row.querySelector('.additional-operation')
+                        let opEl = document.createElement('tr')
+
+                        opEl.innerHTML = `
+                        <td rowspan = "2" colspan = "3"></td>
                         <td rowspan = "2">${needOperations[i].numberOperation ? needOperations[i].numberOperation : ''}</td>
                         <td rowspan = "2">${needOperations[i].nameOperation ? needOperations[i].nameOperation : ''}</td>
                         <td rowspan = "2">${needOperations[i].countIssued ? needOperations[i].countIssued : ''}</td>
                         <td rowspan = "2">${needOperations[i].countAccepted ? needOperations[i].countAccepted : ''}</td>
-                        <td rowspan = "2">${needOperations[i].percentage ? needOperations[i].percentage : ''}</td>
-                        </tr>
-                        </table>
-                        </td> `
-                        row.appendChild(opEl);
-
-
+                        <td rowspan = "2">${needOperations[i].percentage ? needOperations[i].percentage : ''}</td>         
+                        `
+                        op.appendChild(opEl);
+                        opEl = document.createElement('tr')
+                        op.appendChild(opEl);
+                        console.log(`Операция ${needOperations[i].numberOperation} выведена`)
                     }
 
-                    row.addEventListener('click', function(){
-                             let table = row.querySelector("td:first-child");
-                            if (table) {
-                                let idValue = table.textContent; // Получаем значение ячейки
-                                let elementToChange = document.getElementById(idValue); // Находим элемент по id
-                                if (elementToChange) {
-                                    elementToChange.classList.add("active"); // Изменяем класс найденного элемента
-                                }
+                    row.addEventListener('click', function () {
+                        let table = row.querySelector("td:first-child");
+                        if (table) {
+                            let idValue = table.textContent; // Получаем значение ячейки
+                            let elementToChange = document.getElementById(idValue); // Находим элемент по id
+                            if (elementToChange) {
+                                elementToChange.classList.add("active"); // Изменяем класс найденного элемента
                             }
-                        })
+                        }
+                    })
                     tableTask.appendChild(row);
 
 

@@ -1,3 +1,5 @@
+
+
 ShowListTask()
 
 //функция отображения данных на странице
@@ -7,15 +9,21 @@ function ShowListTask() {
         .then(data => {
             //фильтрация по датам
             //считываем даты из полей
+
             const dateIssueBegin = document.getElementById('date-issue-begin').value ?
-                    new Date(document.getElementById('date-issue-begin').value) : null,
+                    new Date(document.getElementById('date-issue-begin').value)
+                    : new Date(),
                 dateIssueEnd = document.getElementById('date-issue-end').value ?
-                    new Date(document.getElementById('date-issue-end').value) : null,
+                    new Date(document.getElementById('date-issue-end').value)
+                    : new Date(),
                 dateAcceptBegin = document.getElementById('date-accept-begin').value ?
                     new Date(document.getElementById('date-accept-begin').value) : null,
                 dateAcceptEnd = document.getElementById('date-accept-end').value ?
                     new Date(document.getElementById('date-accept-end').value) : null
 
+
+
+            console.log(dateIssueEnd)
             //вот тут проверяется, чтобы оба поля временного интервала были заполнены, и только тогда фильтруем данные.
             // по сути стоит подсовывать дефолтные значения, но это проблема будущей меня
             if (dateIssueBegin !== null && dateIssueEnd !== null)
@@ -29,7 +37,7 @@ function ShowListTask() {
 
             const tableBody = document.querySelector('.data-table tbody')
             const pagination = document.querySelector('#pagination');
-            let rowsCount = 10;//количество строк данных на одной странице
+            let rowsCount = 8;//количество строк данных на одной странице
             let active; //переменная для хранения активной кнопки отобращения страницы
             let pageCount = Math.ceil(data.length / rowsCount)//количество страниц с данными
 
@@ -46,7 +54,6 @@ function ShowListTask() {
             function filterDate(arr, prop, valueBegin, valueEnd) {
                 let valueDateBegin = new Date(valueBegin.getFullYear(), valueBegin.getMonth(), valueBegin.getDate())
                 let valueDateEnd = new Date(valueEnd.getFullYear(), valueEnd.getMonth(), valueEnd.getDate())
-                console.log(valueDateEnd)
 
                 let newArray = data.map(item => {
                     let date = new Date(item[prop]);
