@@ -51,4 +51,14 @@
     transition: transform .4s;
 }
 
+label{
+    display: block;
+}
+
+input{
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
 
