@@ -69,13 +69,8 @@ function ShowListTask() {
                 array.sort((a, b) => a[param] > b[param] ? 1 : -1);
             }
 
-            /**
-             * функция возвращает путь до нужной страницы с передачей на неё идентификатора страницы
-             *
-             * @param id идентификатор задачи
-             */
-            function sendId(id) {
-                window.location.href = '../html/task.html?id=' + id;
+            function sendId(id, departTask, masterName) {
+                window.location.href = `../html/task.html?taskId=${id}&departTask=${departTask}&masterName=${masterName}`;
             }
 
             /**
@@ -203,9 +198,11 @@ function ShowListTask() {
 
                     //присвоение события перехода на страницу с данными о задании каждой строке таблицы
                     row.setAttribute('id', `${item.idTask}`)
+                    // row.setAttribute('departTask', `${}`)
+                    // row.setAttribute('masterName', `${}`)
                     row.addEventListener('click', function () {
                         select_row(row)
-                        sendId(row.id)
+                        sendId(row.id, item.departTask, item.masterName)
                     });
 
                     //отрисовка таблицы с данными

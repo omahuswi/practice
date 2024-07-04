@@ -21,41 +21,69 @@ const resultsList = document.getElementById('result'),
     headerTask = document.querySelector('.header'), //блок для вывода общей информации по заданию
     tableTask = document.querySelector('.task-table')
 
-let taskId
+let taskId;
+let departTask;
+let masterName;
+
+let taskInfo
 
 new URLSearchParams(window.location.search).forEach((value, name) => {
-    taskId = `${value}`
-    fetch('../json/task.json')
-        .then(response => response.json())
-        .then(data => {
-            let needData = data.filter(item => item.idTask == taskId); //список данных одного задания
-            let showSP = [];
-            let showedSP = [];
-            let numSP;
-            needData.forEach(item => {
-                numSP = item.numberSP
-                if (showSP.indexOf(numSP) === -1) {
-                    showSP.push(numSP)
-                }
-            })
+    if (name === 'taskId') {
+        taskId = value;
+    } else if (name === 'departTask') {
+        departTask = value;
+    } else if (name === 'masterName') {
+        masterName = value;
+    }
+})
 
-            needData.forEach(item => {
-                if (showedSP.indexOf(item.numberSP) === -1) {
-                    showedSP.push(item.numberSP)
+fetch('../json/task.json')
+    .then(response => response.json())
+    .then(data => {
+        let needData = data.filter(item => item.idTask == taskId); //список данных одного задания по taskId
+        let showSP = [] //список деталей для отрисовки
+        let showedSP = [] //список отрисованных деталей
+        let numSP //номер детали
 
-                    headerTask.innerHTML = `Сменно-суточное задание № ${item.numberTask}`
-                    resultsList.innerHTML = `
-                            <p>Работник: ${item.workerName}</p>
-                            <p>Дата выдачи: ${formatDateTime(item.dateIssue)}</p>
-                            <p>Дата принятия: ${formatDateTime(item.dateAccept)}</p>
+
+        //получение списка номеров деталей
+        needData.forEach(item => {
+            numSP = item.numberSP
+            if (showSP.indexOf(numSP) === -1) {
+                showSP.push(numSP)
+            }
+
+            //данные о задании
+            taskInfo = {
+                idTask: taskId,
+                numberTask: item.numberTask,
+                workerName: item.workerName,
+                masterName: masterName,
+                departTask: departTask
+            }
+        })
+
+        needData.forEach(item => {
+            if (showedSP.indexOf(item.numberSP) === -1) {
+                showedSP.push(item.numberSP)
+
+                //отрисовка данных о задании
+                headerTask.innerHTML = `Сменно-суточное задание № ${taskInfo.numberTask}`
+                resultsList.innerHTML = `
+                            <p>Работник: ${taskInfo.workerName}</p>
+                            <p>Мастер: ${taskInfo.masterName}</p>
+                            <p>Цех: ${taskInfo.departTask}</p>
+                            <p>Дата выдачи: ${item.dateIssue ? formatDateTime(item.dateIssue) : '-'}</p>
+                            <p>Дата принятия: ${item.dateAccept ? formatDateTime(item.dateAccept) : '-'}</p>
                         `
-                    let needOperations = needData.filter(data => data.numberSP === item.numberSP);
-                    needOperations.sort((a, b) => a.numberOperation > b.numberOperation ? 1 : -1);
+                // список операций для данной детали
+                let needOperations = needData.filter(data => data.numberSP === item.numberSP)
+                    .sort((a, b) => a.numberOperation > b.numberOperation ? 1 : -1)
 
-
-                    let row = document.createElement('tbody');
-                    row.classList.add("content")
-                    row.innerHTML = `
+                //отрисовка задания и первой операции
+                let row = document.createElement('tbody');
+                row.classList.add("content")
+                row.innerHTML = `
                     <tr class = "item">
                         <td rowspan="2">${item.numberSP ? item.numberSP : ''}</td>                        
                         <td ${item.nameSP ? '' : 'rowspan="2"'}>${item.designSP ? item.designSP : ''}</td>
@@ -65,23 +93,19 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                         <td rowspan="2">${needOperations[0].countIssued ? needOperations[0].countIssued : ''}</td>
                         <td rowspan="2">${needOperations[0].countAccepted ? needOperations[0].countAccepted : ''}</td>
                         <td rowspan="2">${needOperations[0].percentage ? needOperations[0].percentage : ''}</td>
-                    </tr>                                                  
-                    ${item.nameSP ? `
-                        <tr>
-                            <td>${item.nameSP}</td>
-                        </tr>` : `
-                        <tr>                            
-                        </tr>`}
-                    <tr class="operation">
-                    <td class="operation" colspan="8">
-                        <table class = "additional-operation" id = ${item.numberSP}></table>
+                    </tr>                                             
+                    ${item.nameSP ? `<tr><td>${item.nameSP}</td></tr>` : `<tr></tr>`}
+                    <tr class="operation" >
+                        <td class="operation" colspan="8">
+                            <table class = "additional-operation" id = ${item.numberSP}></table>
                         </td> 
                     </tr>`
 
-                    for (let i = 1; i < needOperations.length; i++) {
-                        let op = row.querySelector('.additional-operation')
-                        let opEl = document.createElement('tr')
-                        opEl.innerHTML = `
+                //отрисовка остальных операций
+                for (let i = 1; i < needOperations.length; i++) {
+                    let op = row.querySelector('.additional-operation')
+                    let opEl = document.createElement('tr')
+                    opEl.innerHTML = `
                         <td rowspan = "2" colspan = "3"></td>
                         <td rowspan = "2">${needOperations[i].numberOperation ? needOperations[i].numberOperation : ''}</td>
                         <td rowspan = "2">${needOperations[i].nameOperation ? needOperations[i].nameOperation : ''}</td>
@@ -89,32 +113,39 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                         <td rowspan = "2">${needOperations[i].countAccepted ? needOperations[i].countAccepted : ''}</td>
                         <td rowspan = "2">${needOperations[i].percentage ? needOperations[i].percentage : ''}</td>         
                         `
-                        op.appendChild(opEl);
-                        opEl = document.createElement('tr')
-                        op.appendChild(opEl);
-                    }
-
-                    row.addEventListener('click', function () {
-                        let table = row.querySelector("td:first-child");
-                        if (table) {
-                            let idValue = table.textContent; // Получаем значение ячейки
-                            let elementToChange = document.getElementById(idValue); // Находим элемент по id
-                            if (elementToChange) {
-                                elementToChange.classList.add("active"); // Изменяем класс найденного элемента
-                            }
-                        }
-                    })
-                    tableTask.appendChild(row);
-
-
-                } else {
-                    console.log(`Деталь ${item.numberSP} уже выводилась`)
+                    op.appendChild(opEl);
+                    opEl = document.createElement('tr')
+                    op.appendChild(opEl);
+                    row.querySelector('tr.operation').style.display = 'none'
                 }
-            })
+                tableTask.appendChild(row);
+
+                //ГАРМОШКА
+                document.querySelectorAll('tbody.content').forEach(content => {
+                    content.onclick = function () {
+                        let operationRow = content.querySelector('tr.operation')
+
+                        if (operationRow.style.display === 'none' || operationRow.style.display === '') {
+                            operationRow.style.display = 'contents'; // Если строка скрыта или не видима, показываем её
+                        } else {
+                            operationRow.style.display = 'none'; // Если строка видима, скрываем её
+                        }
+                    }
+                });
+
+            } else {
+                console.log(`Деталь ${item.numberSP} уже выводилась`)
+            }
         })
-})
+    })
+
+
 document.getElementById('open-update-modal-btn').addEventListener("click", () => {
     document.getElementById('update-modal').classList.add("open")
+    document.getElementById('number-task').value = taskInfo.numberTask
+    document.getElementById('worker-name').value = taskInfo.workerName
+    document.getElementById('master-name').value = taskInfo.masterName
+    document.getElementById('depart-task').value = taskInfo.departTask
 })
 
 document.getElementById('close-update-modal-btn').addEventListener("click", () => {
@@ -152,7 +183,6 @@ document.getElementById('update-btn').addEventListener("click", () => {
                         return obj
                     }
                 })
-
                 const json = JSON.stringify(updatedData, null, 2);
 
                 const blob = new Blob([json], {type: 'application/json'});
