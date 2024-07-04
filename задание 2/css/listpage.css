@@ -1,47 +1,3 @@
-:root {
-    --text: #2D2C42;
-    --background: #EDF2F4;
-    --accent: #EA323E;
-    --additional-dark: #8F98AE;
-    --additional2-light: #ced2dc;
-    --additional3-light: #e1e5e8;
-}
-
-*, *::after, *::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Bodoni MT Poster Compressed", monospace;
-}
-
-/*-------------------блоки-----------------------------*/
-body {
-    background: radial-gradient(var(--additional-dark), var(--background));
-    color: var(--text);
-    font-size: 0.9rem;
-}
-
-.main {
-    padding: 20px;
-    background: var(--background);
-    border-radius: 20px;
-    margin: 20px;
-    flex: 1;
-}
-
-header.main {
-    background: var(--text);
-    text-align: center;
-    color: var(--background);
-    margin: 0;
-    border-radius: 0;
-}
-
-hr {
-    margin: 10px 0;
-}
-
-/*----------------- элементы-------------------------------*/
 input[type="date"] {
     padding: 10px 3px;
     width: 110px;
@@ -69,20 +25,6 @@ input[type="date"]:focus, input[type="date"]:hover {
     display: flex;
 }
 
-
-#header {
-    display: flex;
-    justify-content: flex-end;
-
-    h1 {
-        margin-right: auto;
-    }
-
-    button {
-        margin-left: auto;
-    }
-}
-
 .search {
     display: flex;
     align-items: center;
@@ -98,7 +40,6 @@ input[type="date"]:focus, input[type="date"]:hover {
     transition: 0.3s;
     font-size: 0.9rem;
 }
-
 
 #search:focus, #search:hover {
     border-color: var(--text);
@@ -118,134 +59,6 @@ input[type="date"]:focus, input[type="date"]:hover {
 
     input {
         margin-right: 5px; /* отступ между input и label */
-    }
-}
-
-
-.button {
-    border: 1px solid var(--additional-dark);
-    outline: none;
-    color: var(--text);
-    background: var(--background);
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-.main-button {
-    border: 1px solid var(--text);
-    outline: none;
-    color: var(--background);
-    background: var(--text);
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-.main-button:hover {
-    border-color: var(--text);
-    background: var(--additional-dark);
-    transition: 0.3s;
-}
-
-.main-button:focus {
-    background: var(--additional-dark);
-}
-
-.button:hover {
-    border-color: var(--text);
-    background: var(--additional3-light);
-    transition: 0.3s;
-}
-
-.button:focus {
-    background: var(--additional2-light);
-}
-
-
-.hidden {
-    display: none;
-}
-
-.back {
-    margin: 20px;
-}
-
-.back:hover, .back:focus {
-    color: var(--text);
-    cursor: pointer;
-}
-
-table {
-    padding: 20px;
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 10px;
-    background-color: var(--background);
-    border-radius: 20px;
-    box-shadow: 0 5px 10px var(--additional-dark);
-    overflow: hidden;
-    outline: none;
-    text-align: center;
-    table-layout: fixed;
-
-    td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(5) {
-        text-align: left;
-        padding: 10px 5px;
-    }
-
-    td:nth-child(4), td:nth-child(6), td:nth-child(7), td:nth-child(8)  {
-        text-align: right;
-        padding: 10px 5px;
-    }
-
-
-    thead {
-        box-shadow: 0 5px 10px var(--additional-dark);
-    }
-
-    th {
-        padding: 12px 15px;
-        letter-spacing: 0.1rem;
-        font-size: 0.9rem;
-        font-weight: 900;
-        border: 1px solid var(--additional-dark);
-        cursor: pointer;
-    }
-
-    td, th {
-        border: 1px solid var(--additional-dark);
-        padding: 10px 5px;
-        overflow: hidden;
-    }
-
-}
-
-.task-table {
-    td.operation {
-        padding: 0;
-        border-right: none;
-        border-top: none;
-    }
-
-    .additional-operation {
-        margin: 0;
-        table-layout: fixed;
-        padding: 0;
-        box-shadow: none;
-        border-collapse: collapse;
-        border-radius: 0;
-
-    }
-
-    .additional-operation td:nth-child(1) {
-        border-left: none;
-        border-bottom: none;
-        border-top: none;
     }
 }
 
@@ -270,7 +83,6 @@ table {
         background-color: var(--additional2-light);
     }
 }
-
 
 #pagination {
     /*margin-top: 20px;*/
@@ -311,73 +123,7 @@ table {
     margin-top: 20px
 }
 
-
-@media screen and (min-width: 1920px) {
-    body {
-        background: radial-gradient(var(--additional-dark), var(--background));
-        color: var(--text);
-        font-size: 1.5rem;
-    }
-
-    .main {
-        padding: 50px;
-        background: var(--background);
-        border-radius: 50px;
-        margin: 50px;
-    }
-
-    .data-table {
-        padding: 20px;
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-        background-color: var(--background);
-        border-radius: 20px;
-        box-shadow: 0 5px 10px var(--additional-dark);
-        overflow: hidden;
-        outline: none;
-        text-align: left;
-
-
-        thead {
-            box-shadow: 0 5px 10px var(--additional-dark);
-        }
-
-        th {
-            padding: 12px 15px;
-            letter-spacing: 0.1rem;
-            font-size: 1.5rem;
-            font-weight: 900;
-            border: 1px solid var(--additional-dark);
-            cursor: pointer;
-        }
-    }
-
-    .add-task {
-        border: 1px solid var(--additional-dark);
-        outline: none;
-        color: var(--text);
-        background: var(--background);
-        border-radius: 10px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        padding: 10px 15px;
-        cursor: pointer;
-    }
-
-    #search {
-        padding: 7px 10px;
-        border: 1px solid var(--additional-dark);
-        outline: none;
-        color: var(--text);
-        background: var(--background);
-        border-radius: 10px;
-        transition: 0.3s;
-        font-size: 1.5rem;
-    }
-
-}
-
 .selected {
     background-color: var(--additional2-light);
 }
+

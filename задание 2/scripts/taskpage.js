@@ -17,25 +17,18 @@ function formatDateTime(dateTimeString) {
 ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }
 
-
 const resultsList = document.getElementById('result'),
     headerTask = document.querySelector('.header'), //блок для вывода общей информации по заданию
     tableTask = document.querySelector('.task-table')
 
+let taskId
+
 new URLSearchParams(window.location.search).forEach((value, name) => {
-    let taskId = `${value}`
+    taskId = `${value}`
     fetch('../json/task.json')
         .then(response => response.json())
         .then(data => {
-            function addOperations(data, numberSP) {
-            }
-
-            function contains(arr, elem) {
-                return arr.prototype.includes(elem);
-            }
-
             let needData = data.filter(item => item.idTask == taskId); //список данных одного задания
-
             let showSP = [];
             let showedSP = [];
             let numSP;
@@ -86,7 +79,6 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     </tr>`
 
 
-                    console.log(needOperations)
                     for (let i = 1; i < needOperations.length; i++) {
                         let op = row.querySelector('.additional-operation')
                         let opEl = document.createElement('tr')
@@ -102,7 +94,6 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                         op.appendChild(opEl);
                         opEl = document.createElement('tr')
                         op.appendChild(opEl);
-                        console.log(`Операция ${needOperations[i].numberOperation} выведена`)
                     }
 
                     row.addEventListener('click', function () {
@@ -122,6 +113,55 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                     console.log(`Деталь ${item.numberSP} уже выводилась`)
                 }
             })
+        })
+})
+document.getElementById('open-update-modal-btn').addEventListener("click", () => {
+    document.getElementById('update-modal').classList.add("open")
+})
+
+document.getElementById('close-update-modal-btn').addEventListener("click", () => {
+    document.getElementById('update-modal').classList.remove("open")
+})
+
+document.getElementById('update-btn').addEventListener("click", () => {
+    let numberTask = document.getElementById('number-task').value,
+        workerName = document.getElementById('worker-name').value,
+        masterName = document.getElementById('master-name').value,
+        departTask = document.getElementById('depart-task').value
+
+    fetch('../json/listTask.json')
+        .then(response => response.json())
+        .then(data => {
+            const updatedData = data.map(obj => {
+                if (obj.idTask === parseInt(taskId)) {
+                    let taskObj = JSON.stringify(obj)
+                    localStorage.setItem('task2', taskObj)
+                    return {
+                        ...obj, numberTask: numberTask,
+                        workerName: workerName,
+                        masterName: masterName,
+                        departTask: departTask
+                    };
+                } else {
+                    return obj;
+                }
+            });
+
+            // Преобразуем обновленные данные в JSON
+            const json = JSON.stringify(updatedData, null, 2);
+
+            // Создаем Blob и ссылку для скачивания
+            const blob = new Blob([json], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+
+            // Создаем ссылку для скачивания файла
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data.json';
+            a.click();
+
+            // Очищаем URL объекта
+            URL.revokeObjectURL(url)
         })
 })
 

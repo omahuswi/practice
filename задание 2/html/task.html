@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Сменно-суточное задание №</title>
-    <link rel="stylesheet" href="../css/listpage.css"></link>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="stylesheet" href="../css/task.css"/>
+    <link rel="stylesheet" href="../css/modalupdate.css"/>
 
 </head>
 <body>
@@ -12,22 +14,23 @@
 </header>
 
 <a class="back" onclick="javascript:history.back(); return false;"> < Назад</a>
-<!--<a class="back" href="listpage.html">< Назад</a>-->
 
 <form class="main">
     <div id="header">
-        <h1 class = "header" ></h1>
-        <button type="button" class="add-task"> Принять </button>
-
+        <h1 class="header"></h1>
+        <div>
+            <button type="button" class="button"> Удалить</button>
+            <button type="button" class="button" id="open-update-modal-btn"> Изменить </button>
+            <button type="button" class="main-button"> Принять</button>
+        </div>
     </div>
     <hr>
     <div id="result"></div>
-
     <div class="data">
-        <table class = "task-table">
+        <table class="task-table">
             <thead>
-             <tr>
-                <th rowspan="2" id = "numberTask">НОМЕР</th>
+            <tr>
+                <th rowspan="2" id="numberTask">НОМЕР</th>
                 <th>ОБОЗНАЧЕНИЕ</th>
                 <th rowspan="2">ТИПОРАЗМЕР</th>
                 <th colspan="2">ОПЕРАЦИЯ</th>
@@ -44,7 +47,42 @@
             </thead>
         </table>
     </div>
-    <script src="../scripts/taskpage.js"></script>
 </form>
+
+<div class="modal" id="update-modal">
+    <div class="modal-overlay">
+        <div class="modal-window">
+            <header class="modal-header">
+                <h1>Редактировать</h1>
+                <button class="modal-close-btn" id="close-update-modal-btn"><span>&times;</span></button>
+            </header>
+            <hr/>
+            <div class="modal-body">
+                <div>
+                    <label>Номер задания<input class="form-control" type="text" name="numberTask" id="number-task"
+                           placeholder="Номер задания"></label>
+                </div>
+                <div>
+                    <label>Цех<input class="form-control" type="text" name="departTask" id="depart-task"
+                           placeholder="Цех"></label>
+                </div>
+                <div>
+                    <label>ФИО работника<input class="form-control" type="text" name="workerName" id="worker-name"
+                           placeholder="ФИО работника"></label>
+                </div>
+                <div>
+                    <label>ФИО мастера<input class="form-control" type="text" name="masterName" id="master-name"
+                           placeholder="ФИО мастера"></label>
+                </div>
+            </div>
+            <hr/>
+            <div class="modal-footer">
+                <button class="main-button" id="update-btn"> Изменить </button>
+                <button class="button"> Отменить </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../scripts/taskpage.js"></script>
 </body>
 </html>
