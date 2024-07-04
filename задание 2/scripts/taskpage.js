@@ -94,7 +94,7 @@ fetch('../json/task.json')
                         <td rowspan="2">${needOperations[0].countAccepted ? needOperations[0].countAccepted : ''}</td>
                         <td rowspan="2">${needOperations[0].percentage ? needOperations[0].percentage : ''}</td>
                     </tr>                                             
-                    ${item.nameSP ? `<tr><td>${item.nameSP}</td></tr>` : `<tr></tr>`}
+                    ${item.nameSP ? `<tr class = "item"><td>${item.nameSP}</td></tr>` : `<tr class = "item"></tr>`}
                     <tr class="operation" >
                         <td class="operation" colspan="8">
                             <table class = "additional-operation" id = ${item.numberSP}></table>
@@ -122,9 +122,17 @@ fetch('../json/task.json')
 
                 //ГАРМОШКА
                 document.querySelectorAll('tbody.content').forEach(content => {
-                    content.onclick = function () {
-                        let operationRow = content.querySelector('tr.operation')
+                    function select_row(row) {
+                        row.parentNode.querySelectorAll('tr').forEach(row => row.classList.remove('selected')); // Удаляем класс 'selected' у всех строк
+                        row.classList.add('selected'); // Добавляем класс 'selected' кликнутой строке
+                    }
 
+                    let operationRow = content.querySelector('tr.operation')
+                    operationRow.addEventListener('click', function () {
+                        select_row(operationRow)
+                    });
+
+                    content.onclick = function () {
                         if (operationRow.style.display === 'none' || operationRow.style.display === '') {
                             operationRow.style.display = 'contents'; // Если строка скрыта или не видима, показываем её
                         } else {
@@ -149,53 +157,70 @@ document.getElementById('open-update-modal-btn').addEventListener("click", () =>
 })
 
 document.getElementById('close-update-modal-btn').addEventListener("click", () => {
+    //тут должна была бы быть проверка на внесение изменений
+    // if (window.confirm("Сохранить изменения?")) {
+    //     //тут что нибудь
+    // }
     document.getElementById('update-modal').classList.remove("open")
 })
 
 document.getElementById('update-btn').addEventListener("click", () => {
-    let numberTask = document.getElementById('number-task').value,
-        workerName = document.getElementById('worker-name').value,
-        masterName = document.getElementById('master-name').value,
-        departTask = document.getElementById('depart-task').value
-
-    CreateDataFile('listTask')
-    CreateDataFile('task')
-
-    function CreateDataFile(fileName) {
-        fetch(`../json/${fileName}.json`)
-            .then(response => response.json())
-            .then(data => {
-                const updatedData = data.map(obj => {
-                    if (obj.idTask === parseInt(taskId)) {
-                        const updatedObj = {
-                            ...obj,
-                            numberTask: numberTask,
-                            workerName: workerName,
-                        }
-                        if (obj.masterName) {
-                            updatedObj.masterName = masterName;
-                        }
-                        if (obj.departTask) {
-                            updatedObj.departTask = departTask;
-                        }
-                        return updatedObj
-                    } else {
-                        return obj
-                    }
-                })
-                const json = JSON.stringify(updatedData, null, 2);
-
-                const blob = new Blob([json], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
-
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${fileName}.json`;
-                a.click();
-
-                URL.revokeObjectURL(url)
-            })
+    if (window.confirm("Подтвердите изменение")) {
+        CreateDataFile('listTask', 'update')
+        CreateDataFile('task', 'update')
     }
 })
+
+document.getElementById('delete-btn').addEventListener("click", () => {
+    if (window.confirm("Подтвердите удаление")) {
+        CreateDataFile('listTask', 'delete')
+        CreateDataFile('task', 'delete')
+    }
+})
+
+document.getElementById('accept-btn').addEventListener("click", () => {
+    if (window.confirm("Подтвердите принятие")) {
+        CreateDataFile('listTask', 'accept')
+        CreateDataFile('task', 'accept')
+    }
+})
+
+function CreateDataFile(fileName, operation) {
+    fetch(`../json/${fileName}.json`)
+        .then(response => response.json())
+        .then(data => {
+            let numberTask = document.getElementById('number-task').value,
+                workerName = document.getElementById('worker-name').value,
+                masterName = document.getElementById('master-name').value,
+                departTask = document.getElementById('depart-task').value
+
+            const updatedData = operation === 'update' ? data.map(obj => {
+                if (obj.idTask === parseInt(taskId)) {
+                    const updatedObj = {...obj, numberTask: numberTask, workerName: workerName,}
+                    if (obj.masterName) updatedObj.masterName = masterName
+                    if (obj.departTask) updatedObj.departTask = departTask
+                    return updatedObj
+                }
+                else return obj
+
+            }) : operation === 'accept' ? data.map(obj => {
+                if (obj.idTask === parseInt(taskId)) {
+                    const updatedObj = {...obj, dateAccept: new Date()}
+                    return updatedObj
+                }
+                else return obj
+
+            }) : data.filter(obj => obj.id !== taskId);
+            const json = JSON.stringify(updatedData, null, 2);
+            const blob = new Blob([json], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${fileName}.json`;
+            a.click();
+            URL.revokeObjectURL(url)
+        })
+}
 
 

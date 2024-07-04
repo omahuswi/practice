@@ -123,7 +123,5 @@ input[type="date"]:focus, input[type="date"]:hover {
     margin-top: 20px
 }
 
-.selected {
-    background-color: var(--additional2-light);
-}
+
 

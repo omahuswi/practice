@@ -98,6 +98,10 @@ input:focus, input:hover {
     display: none;
 }
 
+.selected {
+    background-color: var(--additional2-light);
+}
+
 .main {
     padding: 20px;
     background: var(--background);

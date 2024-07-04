@@ -1,10 +1,19 @@
 
-
 .task-table {
     td.operation {
         padding: 0;
         border-right: none;
         border-top: none;
+    }
+
+    tr.item:hover {
+        background-color: var(--additional3-light);
+        transition: 0.3s;
+        cursor: pointer
+    }
+
+    tr.item:focus {
+        background-color: var(--additional2-light);
     }
 
     .additional-operation {

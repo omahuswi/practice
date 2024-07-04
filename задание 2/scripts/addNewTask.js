@@ -20,9 +20,7 @@ document.getElementById('save-btn').addEventListener("click", () => {
             .then(response => response.json())
             .then(data => {
                 const updatedData = {...data, ...taskObj};
-
                 const json = JSON.stringify(updatedData, null, 2);
-
                 const blob = new Blob([json], {type: 'application/json'});
                 const url = URL.createObjectURL(blob);
 
@@ -31,7 +29,6 @@ document.getElementById('save-btn').addEventListener("click", () => {
                 a.download = `${fileName}.json`;
                 a.click();
                 URL.revokeObjectURL(url);
-
             })
     }
 

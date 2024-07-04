@@ -189,8 +189,6 @@ function ShowListTask() {
                 paginatedData.forEach(item => {
                     let row = document.createElement('tr');
 
-                    var selected_row = null;
-
                     function select_row(row) {
                         row.parentNode.querySelectorAll('tr').forEach(row => row.classList.remove('selected')); // Удаляем класс 'selected' у всех строк
                         row.classList.add('selected'); // Добавляем класс 'selected' кликнутой строке
@@ -198,8 +196,6 @@ function ShowListTask() {
 
                     //присвоение события перехода на страницу с данными о задании каждой строке таблицы
                     row.setAttribute('id', `${item.idTask}`)
-                    // row.setAttribute('departTask', `${}`)
-                    // row.setAttribute('masterName', `${}`)
                     row.addEventListener('click', function () {
                         select_row(row)
                         sendId(row.id, item.departTask, item.masterName)
