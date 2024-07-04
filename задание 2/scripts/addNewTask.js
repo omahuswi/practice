@@ -1,5 +1,4 @@
-document.getElementById('save-btn').addEventListener('submit', event => {
-    event.preventDefault()
+document.getElementById('save-btn').addEventListener("click", () =>  {
     let numberTask = document.getElementById('number-task').value,
         workerName = document.getElementById('worker-name').value,
         masterName = document.getElementById('master-name').value,
