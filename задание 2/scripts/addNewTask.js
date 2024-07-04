@@ -1,36 +1,40 @@
 document.getElementById('save-btn').addEventListener("click", () => {
-    fetch('../json/listTask.json')
-        .then(response => response.json())
-        .then(data => {
-            //ДОБАВЛЕНИЕ НОВОГО ЗАДАНИЯ
-            let numberTask = document.getElementById('number-task').value,
-                workerName = document.getElementById('worker-name').value,
-                masterName = document.getElementById('master-name').value,
-                departTask = document.getElementById('depart-task').value
+    let numberTask = document.getElementById('number-task').value,
+        workerName = document.getElementById('worker-name').value,
+        masterName = document.getElementById('master-name').value,
+        departTask = document.getElementById('depart-task').value
 
-            let taskObj = {
-                idTask: 11111111,
-                numberTask: numberTask,
-                departTask: departTask,
-                masterName: masterName,
-                workerName: workerName,
-                dateIssue: new Date(),
-                dateAccept: null
-            };
-            const updatedData = {...data, ...taskObj};
+    let taskObj = {
+            idTask: 11111111,
+            numberTask: numberTask,
+            departTask: departTask,
+            masterName: masterName,
+            workerName: workerName,
+            dateIssue: new Date(),
+            dateAccept: null
+        }
+        CreateDataFile('listTask')
 
-            const json = JSON.stringify(updatedData, null, 2);
+    function CreateDataFile(fileName) {
+        fetch(`../json/${fileName}.json`)
+            .then(response => response.json())
+            .then(data => {
+                const updatedData = {...data, ...taskObj};
 
-            const blob = new Blob([json], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
+                const json = JSON.stringify(updatedData, null, 2);
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'listTask.json';
-            a.click();
+                const blob = new Blob([json], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
 
-            URL.revokeObjectURL(url);
-            history.back()
-        })
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fileName}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+            })
+    }
+
+    history.back()
 })
 

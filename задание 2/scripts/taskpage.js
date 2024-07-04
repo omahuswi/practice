@@ -78,11 +78,9 @@ new URLSearchParams(window.location.search).forEach((value, name) => {
                         </td> 
                     </tr>`
 
-
                     for (let i = 1; i < needOperations.length; i++) {
                         let op = row.querySelector('.additional-operation')
                         let opEl = document.createElement('tr')
-
                         opEl.innerHTML = `
                         <td rowspan = "2" colspan = "3"></td>
                         <td rowspan = "2">${needOperations[i].numberOperation ? needOperations[i].numberOperation : ''}</td>
@@ -129,40 +127,45 @@ document.getElementById('update-btn').addEventListener("click", () => {
         masterName = document.getElementById('master-name').value,
         departTask = document.getElementById('depart-task').value
 
-    fetch('../json/listTask.json')
-        .then(response => response.json())
-        .then(data => {
-            const updatedData = data.map(obj => {
-                if (obj.idTask === parseInt(taskId)) {
-                    let taskObj = JSON.stringify(obj)
-                    localStorage.setItem('task2', taskObj)
-                    return {
-                        ...obj, numberTask: numberTask,
-                        workerName: workerName,
-                        masterName: masterName,
-                        departTask: departTask
-                    };
-                } else {
-                    return obj;
-                }
-            });
+    CreateDataFile('listTask')
+    CreateDataFile('task')
 
-            // Преобразуем обновленные данные в JSON
-            const json = JSON.stringify(updatedData, null, 2);
+    function CreateDataFile(fileName) {
+        fetch(`../json/${fileName}.json`)
+            .then(response => response.json())
+            .then(data => {
+                const updatedData = data.map(obj => {
+                    if (obj.idTask === parseInt(taskId)) {
+                        const updatedObj = {
+                            ...obj,
+                            numberTask: numberTask,
+                            workerName: workerName,
+                        }
+                        if (obj.masterName) {
+                            updatedObj.masterName = masterName;
+                        }
+                        if (obj.departTask) {
+                            updatedObj.departTask = departTask;
+                        }
+                        return updatedObj
+                    } else {
+                        return obj
+                    }
+                })
 
-            // Создаем Blob и ссылку для скачивания
-            const blob = new Blob([json], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
+                const json = JSON.stringify(updatedData, null, 2);
 
-            // Создаем ссылку для скачивания файла
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'data.json';
-            a.click();
+                const blob = new Blob([json], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
 
-            // Очищаем URL объекта
-            URL.revokeObjectURL(url)
-        })
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fileName}.json`;
+                a.click();
+
+                URL.revokeObjectURL(url)
+            })
+    }
 })
 
 
