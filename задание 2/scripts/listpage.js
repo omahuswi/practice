@@ -1,5 +1,3 @@
-
-
 ShowListTask()
 
 //функция отображения данных на странице
@@ -9,26 +7,30 @@ function ShowListTask() {
         .then(data => {
             //фильтрация по датам
             //считываем даты из полей
+            function getDateValue(id, defaultType, symb) {
+                return document.getElementById(id).value ? new Date(document.getElementById(id).value) : defaultDate(id, defaultType, symb);
+            }
 
-            const dateIssueBegin = document.getElementById('date-issue-begin').value ?
-                    new Date(document.getElementById('date-issue-begin').value)
-                    : new Date(),
-                dateIssueEnd = document.getElementById('date-issue-end').value ?
-                    new Date(document.getElementById('date-issue-end').value)
-                    : new Date(),
-                dateAcceptBegin = document.getElementById('date-accept-begin').value ?
-                    new Date(document.getElementById('date-accept-begin').value) : null,
-                dateAcceptEnd = document.getElementById('date-accept-end').value ?
-                    new Date(document.getElementById('date-accept-end').value) : null
+            const dateIssueBegin = getDateValue('date-issue-begin', 'dateIssue', 'n'),
+                dateIssueEnd = getDateValue('date-issue-end', 'dateIssue', 'x'),
+                dateAcceptBegin = getDateValue('date-accept-begin', 'dateAccept', 'n'),
+                dateAcceptEnd = getDateValue('date-accept-end', 'dateAccept', 'x');
 
+            function defaultDate(id, prop, symb) {
+                const filteredDates = data
+                    .filter(item => item[prop] !== null) // Фильтруем значения null
+                    .map(item => new Date(item[prop]));
+                const minDate = new Date(Math.min(...filteredDates.map(date => date.getTime()))).toISOString().slice(0, 10);
+                document.getElementById(id).min = minDate;
+                document.getElementById(id).value = symb === 'n' ? minDate : new Date().toISOString().slice(0, 10);
+                return new Date(document.getElementById(id).value);
+            }
 
-
-            console.log(dateIssueEnd)
             //вот тут проверяется, чтобы оба поля временного интервала были заполнены, и только тогда фильтруем данные.
             // по сути стоит подсовывать дефолтные значения, но это проблема будущей меня
-            if (dateIssueBegin !== null && dateIssueEnd !== null)
+            if (dateIssueBegin !== null || dateIssueEnd !== null)
                 data = filterDate(data, 'dateIssue', dateIssueBegin, dateIssueEnd)
-            if (dateAcceptBegin !== null && dateAcceptEnd !== null)
+            if (dateAcceptBegin !== null || dateAcceptEnd !== null)
                 data = filterDate(data, 'dateAccept', dateAcceptBegin, dateAcceptEnd)
 
             //сортировка по отмеченному столбцу (пока по дефолту по цеху)
@@ -55,13 +57,12 @@ function ShowListTask() {
                 let valueDateBegin = new Date(valueBegin.getFullYear(), valueBegin.getMonth(), valueBegin.getDate())
                 let valueDateEnd = new Date(valueEnd.getFullYear(), valueEnd.getMonth(), valueEnd.getDate())
 
-                let newArray = data.map(item => {
-                    let date = new Date(item[prop]);
-                    date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                    //возвращаем ненулевые объекты, значения заданного параметра которых попадют в интервал
-                    return (date >= valueDateBegin && date <= valueDateEnd) ? item : null;
+                return newArray = data.map(item => {
+                    let date = item[prop] ? new Date(item[prop]) : null
+                    date = date ? new Date(date.getFullYear(), date.getMonth(), date.getDate()) : null
+                    //возвращаем объекты, значения заданного параметра которых попадют в интервал
+                    return ((date >= valueDateBegin && date <= valueDateEnd) ||  date == null) ? item : null
                 }).filter(item => item !== null);
-                return newArray;
             }
 
             function sortArrayByParam(array, param) {

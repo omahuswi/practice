@@ -6,8 +6,8 @@ document.getElementById('filter-button').onclick = function () {
     } else {
         content.style.display = 'block'; // Если форма закрыта, показываем её
 
-
         const form = document.getElementById('filter-form')
+
 
         form.addEventListener('submit', function (event) {
             event.preventDefault()//Отмена события
@@ -22,23 +22,41 @@ document.getElementById('filter-button').onclick = function () {
     }
 }
 
+
+// function dkdkdk(symb) {
+//     let d
+//     fetch('../json/listTask.json')
+//         .then(response => response.json())
+//         .then(data => {
+//             d = data.map(item => item.dateIssue)
+//                 .reduce((acc, curr) => symb === '>' ? (acc > curr ? acc : curr) : (acc < curr ? acc : curr), 0)
+//         })
+//     console.log(d)
+//     return d
+// new Date(dkdkdk('<')).toISOString().slice(0, 10)
+// }
+
+
 function changeDateFilter(nameInput) {
     const today = new Date();
     dateCh(document.getElementById(`${nameInput}-begin`))
     dateCh(document.getElementById(`${nameInput}-end`))
 
     function dateCh(dateInput) {
+        let d = dkdkdk('>')
         document.querySelectorAll(`input[type=radio][name=${nameInput}]`)
             .forEach(radio => {
                 radio.addEventListener('change', function () {
-                    dateInput.value = dateInput.name === "begin" ? this.value === 'today' ? new Date().toISOString().slice(0, 10)
-                            : this.value === 'thisWeek' ? getThisWeekDate(dateInput.name)
-                                : this.value === 'thisMonth' ? getThisMonthDate(dateInput.name)
-                                    : '' :
-                        this.value === 'today' ? new Date().toISOString().slice(0, 10)
-                            : this.value === 'thisWeek' ? getThisWeekDate(dateInput.name)
-                                : this.value === 'thisMonth' ? getThisMonthDate(dateInput.name)
-                                    : ''
+                    dateInput.value = dateInput.name === "begin" ? this.value === 'all' ? dateInput.min
+                            : this.value === 'today' ? today.toISOString().slice(0, 10)
+                                : this.value === 'thisWeek' ? getThisWeekDate(dateInput.name)
+                                    : this.value === 'thisMonth' ? getThisMonthDate(dateInput.name)
+                                        : dateInput.min
+                        : this.value === 'all' ? today.toISOString().slice(0, 10)
+                            : this.value === 'today' ? today.toISOString().slice(0, 10)
+                                : this.value === 'thisWeek' ? getThisWeekDate(dateInput.name)
+                                    : this.value === 'thisMonth' ? getThisMonthDate(dateInput.name)
+                                        : today.toISOString().slice(0, 10)
                 });
             });
     }
@@ -57,4 +75,25 @@ function changeDateFilter(nameInput) {
         return name === "begin" ? `${new Date(year, month, 2).toISOString().slice(0, 10)}`
             : `${new Date(year, month + 1, 0).toISOString().slice(0, 10)}`
     }
+
+    function dkdkdk(symb) {
+        let d
+        return fetch('../json/listTask.json')
+            .then(response => response.json())
+            .then(data => {
+                d = data.map(item => item.dateIssue)
+                    .reduce((acc, curr) => symb === '<' ? (acc < curr ? acc : curr) : (acc > curr ? acc : curr))
+                return d
+            })
+    }
+
+    async function getValue(symb) {
+        try {
+            return await dkdkdk(symb);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
 }
